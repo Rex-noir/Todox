@@ -10,10 +10,14 @@ class Todo extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'completed' => 'boolean',
+    ];
+
     protected $fillable = [
         'title',
         'description',
-        'status',
+        'completed',
         'due_date',
         'priority',
         'user_id',
