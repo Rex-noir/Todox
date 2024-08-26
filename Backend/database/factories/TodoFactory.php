@@ -22,7 +22,7 @@ class TodoFactory extends Factory
         return [
             'title' => $this->faker->sentence(),
             'description' => $this->faker->paragraph(),
-            'completed' => false,
+            'completed' => $this->faker->boolean(),
             'due_date' => $this->faker->date(),
             'priority' => $this->faker->randomDigit(),
             'user_id' => $user->id
