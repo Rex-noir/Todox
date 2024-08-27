@@ -1,4 +1,4 @@
-import { Todos } from "@/Pages/Todos";
+import { Todos } from "@/Pages/Todo/Todos";
 import { createBrowserRouter } from "react-router-dom";
 
 const router = createBrowserRouter([
