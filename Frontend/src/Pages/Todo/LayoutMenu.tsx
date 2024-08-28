@@ -82,6 +82,7 @@ function ProjectItem({ id, title, status, iconColor }: Project) {
   console.log(iconColor);
   return (
     <NavLink
+      data-testid={`project-item-${id}`}
       to={`/project/${id}`}
       className={({ isActive }) =>
         `flex items-center rounded-md px-4 py-2 text-sm transition-colors duration-150 ease-in-out ${
