@@ -1,11 +1,13 @@
-import LayoutMenu from "./ProjectMenu";
-import TodoListLayout from "./TodListLayout";
+import MobileHeader from "./MobileHeader";
+import LayoutMenu from "./LargeScreenMenu";
+import ViewProject from "./ViewProject";
 
 export const Todos = () => {
   return (
-    <div className="grid min-h-screen gap-3 bg-neutral-100 p-2 md:grid-cols-[300px,auto]">
+    <div className="h-full min-h-screen gap-3 bg-neutral-100 sm:grid sm:grid-cols-[300px,auto] sm:p-2">
       <LayoutMenu />
-      <TodoListLayout />
+      <MobileHeader />
+      <ViewProject />
     </div>
   );
 };
