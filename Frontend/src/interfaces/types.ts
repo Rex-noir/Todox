@@ -9,14 +9,23 @@ export interface User {
 
 export interface Project {
   id: string;
-  user_id: string;
+  user_id?: string;
   title: string;
   description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  status: "active" | "archived" | "completed";
+  createdAt?: Date;
+  updatedAt?: Date;
+  status?: ProjectStatus;
   todoListIds: string[];
+  iconColor?: string; // New field for icon color
 }
+
+export type ProjectStatus =
+  | "active"
+  | "archived"
+  | "completed"
+  | "in progress"
+  | "on hold"
+  | null;
 
 export interface TodoList {
   readonly id: string;
