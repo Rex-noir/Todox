@@ -93,7 +93,7 @@ function ProjectItem({ id, title, status, iconColor }: Project) {
       }
     >
       <TbSquareRounded
-        className={`mr-3 size-6`}
+        className={`mr-3 size-7`}
         style={{ color: iconColor || "#000000" }}
       />
       <div className="flex w-full justify-between">
