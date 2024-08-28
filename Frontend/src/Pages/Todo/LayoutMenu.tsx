@@ -52,7 +52,7 @@ export default function LayoutMenu() {
         </h3>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
-        <nav className="flex h-80 flex-col space-y-1 overflow-y-auto">
+        <nav className="flex h-full flex-col justify-between space-y-1 overflow-y-auto">
           {defaultMenus.map((item) => (
             <MenuItem key={item.name} {...item} />
           ))}
@@ -65,21 +65,11 @@ export default function LayoutMenu() {
         </nav>
         <CreateNewProjectButton />
       </CardContent>
-      <Separator />
-      <CardHeader className="pt-2">
-        <h3 className="scroll-m-20 px-2 text-2xl font-semibold tracking-tight">
-          Team
-        </h3>
-      </CardHeader>
-      <CardContent className="space-x-4 text-center text-neutral-600">
-        Coming soon!
-      </CardContent>
     </Card>
   );
 }
 
 function ProjectItem({ id, title, status, iconColor }: Project) {
-  console.log(iconColor);
   return (
     <NavLink
       data-testid={`project-item-${id}`}
