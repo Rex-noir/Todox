@@ -1,3 +1,4 @@
+import { PREDEFINED_COLORS } from "@/constants";
 import { Project, Todo, TodoList, User } from "@/interfaces/types";
 import { faker } from "@faker-js/faker";
 
@@ -31,6 +32,7 @@ export const generateProjects = (
       updatedAt: faker.date.recent(),
       status: faker.helpers.arrayElement(["active", "archived", "completed"]),
       todoListIds: todoList_id || [],
+      iconColor: faker.helpers.arrayElement([...PREDEFINED_COLORS]).value,
     }),
     count,
   );
