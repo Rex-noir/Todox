@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Todo } from "@/interfaces/types";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
+import { LuCalendar } from "react-icons/lu";
 
 export function ViewTodoList() {
   const todos = useTodoxStore().todos;
@@ -23,19 +24,23 @@ export function ViewTodoList() {
 
 export function TodoItem({ todo }: { todo: Todo }) {
   return (
-    <div className="flex gap-3 overflow-hidden rounded-md bg-white p-3">
-      {/* Checkbox container */}
-      <div className="flex items-center gap-4">
-        <Checkbox className="size-5" />
+    <div className="flex cursor-pointer gap-3 overflow-hidden rounded-md bg-white p-3 hover:bg-neutral-100">
+      <div className="flex items-start gap-4">
+        <Checkbox className="mt-2 size-5" />
       </div>
-      <div className="flex flex-col justify-center sm:flex-row sm:items-center sm:gap-3">
-        <p className="min-w-0 flex-1 truncate">{todo.title}</p>
-        <div className="flex gap-2">
-          {todo.tags.map((tag) => (
-            <Badge variant={"outline"} className="h-4 text-blue-500" key={tag}>
-              {tag}
-            </Badge>
-          ))}
+      <div className="grid w-full items-center gap-1 sm:gap-3 md:grid-cols-3">
+        <div className="w-fit max-w-full overflow-hidden">
+          <p className="min-w-0 flex-1 truncate">{todo.title}</p>
+          <p className="truncate text-sm font-thin">{todo.description}</p>
+        </div>
+        <div className="flex items-center gap-1">
+          <Badge variant={"secondary"} className="h-5 text-blue-500">
+            {todo.tag}
+          </Badge>
+        </div>
+        <div className="flex items-center gap-1 md:justify-end">
+          <LuCalendar />
+          <span>{todo.due_date?.toLocaleDateString()}</span>
         </div>
       </div>
     </div>
