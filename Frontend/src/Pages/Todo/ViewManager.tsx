@@ -6,7 +6,7 @@ export default function ViewManager() {
   const location = useLocation().pathname;
 
   return (
-    <div className="h-full rounded-md sm:p-2 w-full sm:pt-10 md:p-3 lg:p-10 lg:px-32">
+    <div className="h-full w-full rounded-md sm:p-3 md:p-3 lg:p-10 lg:px-32">
       {location === "/todos" ? <ViewAll /> : <ViewProject />}
     </div>
   );
