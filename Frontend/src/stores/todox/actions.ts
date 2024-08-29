@@ -162,3 +162,8 @@ export const setTodos = (todos: Todo[]) => {
     });
   });
 };
+
+export const getTodosForList = (todoListId: string) => {
+  const todoList = useTodoxStore.getState().todoLists[todoListId];
+  return todoList.todoIds.map((id) => useTodoxStore.getState().todos[id]) || [];
+};
