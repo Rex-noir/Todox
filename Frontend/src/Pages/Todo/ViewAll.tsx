@@ -5,9 +5,9 @@ import { TodoListItem } from "./ViewProject";
 
 export default function ViewAll() {
   return (
-    <div className="h-full w-full rounded-xl pt-2">
+    <div className="h-full w-full rounded-xl">
       <Tabs defaultValue="todoList" className="mb-12 w-full">
-        <TabsList className="mt-2 flex w-full justify-center sm:w-fit">
+        <TabsList className="flex w-fit justify-center sm:w-fit">
           <TabsTrigger value="todoList">Todo List</TabsTrigger>
           <TabsTrigger value="todo">Todo</TabsTrigger>
           <TabsTrigger value="completed">Completed</TabsTrigger>
@@ -46,7 +46,7 @@ function TodoListContents() {
 
   const isEmpty = Object.keys(lists).length === 0;
   return (
-    <div>
+    <div className="flex h-[90%] max-w-full flex-col gap-2 px-3">
       {isEmpty ? (
         <p>Empty</p>
       ) : (
