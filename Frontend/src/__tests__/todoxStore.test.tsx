@@ -7,6 +7,7 @@ import {
   deleteProject,
   deleteTodo,
   deleteTodoList,
+  getTodosForList,
   setProjects,
   setTodoLists,
   setTodos,
@@ -172,5 +173,20 @@ describe("useTodoxStore with pre-filled data", () => {
       const state = useTodoxStore.getState();
       expect(Object.keys(state.todos).length).toBe(19);
     });
+  });
+
+  it("return empty array for empty todoIds", () => {
+    addTodoList(sampleTodoList);
+    const todos = getTodosForList(sampleTodoList.id);
+    expect(Array.isArray(todos)).toBe(true);
+  });
+
+  it("return todos of the todoList", () => {
+    addTodoList(sampleTodoList);
+    addTodo(sampleTodo);
+    addTodo({ ...sampleTodo, id: "2" });
+    const todos = getTodosForList(sampleTodoList.id);
+    expect(Array.isArray(todos)).toBe(true);
+    expect(todos.length).toBe(2);
   });
 });
