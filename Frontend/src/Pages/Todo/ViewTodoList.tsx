@@ -34,7 +34,7 @@ export function TodoItem({ todo }: { todo: Todo }) {
           <p className="truncate text-sm font-thin">{todo.description}</p>
         </div>
         <div className="flex items-center gap-1">
-          <Badge variant={"secondary"} className="h-5 text-blue-500">
+          <Badge variant={"outline"} className="h-5">
             {todo.tag}
           </Badge>
         </div>
