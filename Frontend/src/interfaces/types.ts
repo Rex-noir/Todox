@@ -51,5 +51,5 @@ export interface Todo {
   createdAt: Date;
   updatedAt: Date;
   priority: number;
-  tags: string[];
+  tag: string;
 }
