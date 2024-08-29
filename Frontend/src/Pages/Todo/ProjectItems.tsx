@@ -46,7 +46,7 @@ function ProjectItem({ id, title, status, iconColor }: Project) {
       <div className="flex w-full justify-between">
         <span>{title}</span>
         {status && (
-          <Badge variant={"outline"}>
+          <Badge className="h-fit" variant={"outline"}>
             <span className={`${STATUS_COLORS[status]}`}>{status}</span>
           </Badge>
         )}
