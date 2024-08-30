@@ -87,12 +87,6 @@ export const generateTodos = (
       createdAt: faker.date.past(),
       updatedAt: faker.date.recent(),
       priority: faker.number.int({ min: 3, max: 20 }),
-      tag: faker.helpers.arrayElement([
-        "work",
-        "personal",
-        "urgent",
-        "important",
-      ]),
     }),
     count,
   );
