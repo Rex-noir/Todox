@@ -140,7 +140,7 @@ describe("Generator functions", () => {
       "updatedAt",
       "priority",
     ]);
-    expect(typeof todo.priority).toBe("number");
+    expect(typeof todo.priority).toBe("string");
   });
 
   it("should generate multiple todos with valid properties", () => {
@@ -160,7 +160,7 @@ describe("Generator functions", () => {
         "updatedAt",
         "priority",
       ]);
-      expect(typeof todo.priority).toBe("number");
+      expect(typeof todo.priority).toBe("string");
     });
   });
 
