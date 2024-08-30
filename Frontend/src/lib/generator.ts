@@ -52,6 +52,12 @@ export const generateTodoLists = (
       completedTodosCount: 0,
       incompleteTodosCount: 0,
       todoIds: [],
+      tags: faker.helpers.arrayElements([
+        "important",
+        faker.word.adjective(),
+        faker.word.noun(),
+        faker.word.verb(),
+      ]),
     };
     const todos = generateTodos(
       faker.number.int({ min: 2, max: 10 }),
