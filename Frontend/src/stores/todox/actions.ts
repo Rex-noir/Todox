@@ -35,7 +35,6 @@ export const addTodoList = (todoList: TodoList) => {
   useTodoxStore.setState((state) => {
     state.todoLists[todoList.id] = todoList;
 
-    // Add todoList ID to the corresponding project
     const project = state.projects[todoList.project_id];
     if (project) {
       project.todoListIds.push(todoList.id);
