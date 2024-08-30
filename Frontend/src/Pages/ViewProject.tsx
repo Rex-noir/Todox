@@ -18,6 +18,7 @@ import { useTodoxStore } from "@/stores/todox/todoxStore";
 import { format } from "date-fns";
 import { LuCalendar } from "react-icons/lu";
 import { useParams } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 
 const sortTodos = (todos: Todo[]) => {
   return todos.sort((a, b) => {
@@ -189,6 +190,7 @@ export function TodoListItem({ list }: { list: TodoList }) {
           </p>
           <p className="text-sm text-gray-600">{list.description}</p>
         </div>
+        <div className="flex gap-3 h-5">{list.tags?.map((tag) => <Badge>{tag}</Badge>)}</div>
       </div>
     </div>
   );
