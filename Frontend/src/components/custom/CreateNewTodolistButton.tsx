@@ -11,13 +11,16 @@ import {
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
-import { addTodoList, getCurrentViewProject } from "@/stores/todox/actions";
+import { addTodoList } from "@/stores/todox/actions";
 import { faker } from "@faker-js/faker";
+import { useParams } from "react-router-dom";
 
 export function CreateNewTodoList() {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  const { projectId } = useParams();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,7 +33,7 @@ export function CreateNewTodoList() {
       completedTodosCount: 0,
       incompleteTodosCount: 0,
       todoIds: [],
-      project_id: getCurrentViewProject()?.id || "",
+      project_id: projectId || "",
     });
 
     setTitle("");
@@ -39,7 +42,7 @@ export function CreateNewTodoList() {
   return (
     <Dialog defaultOpen={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>
-        <span className="ml-1 flex px-1 cursor-pointer items-center justify-center gap-1 text-green-500 hover:underline">
+        <span className="ml-1 flex cursor-pointer items-center justify-center gap-1 px-1 text-green-500 hover:underline">
           Add todo list
         </span>
       </DialogTrigger>
