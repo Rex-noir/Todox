@@ -214,7 +214,7 @@ export const getTodosForView = (
       break;
     case "important":
       todoLists = Object.values(state.todoLists).filter((list) =>
-        list?.tags?.filter((tag) => tag === "important"),
+        list?.tags?.includes("important"),
       );
       todos = todoLists.flatMap((list) =>
         list.todoIds.map((id) => state.todos[id]).filter(Boolean),

@@ -17,6 +17,7 @@ import {
   updateTodoList,
 } from "@/stores/todox/actions";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
+import { faker } from "@faker-js/faker";
 import { isToday } from "date-fns";
 import { beforeEach, describe, expect, it } from "vitest";
 
@@ -200,5 +201,24 @@ describe("useTodoxStore with pre-filled data", () => {
     todos.forEach((todo) => {
       expect(todo.due_date && isToday(new Date(todo.due_date))).toBe(true);
     });
+  });
+
+  it("return correct data for important view", () => {
+    addTodoList({
+      ...sampleTodoList,
+      id: faker.string.uuid(),
+      tags: ["important"],
+    });
+    addTodoList({
+      ...sampleTodoList,
+      id: faker.string.uuid(),
+      tags: ["important"],
+    });
+
+    const { todoLists } = getTodosForView("important", undefined);
+
+    expect(todoLists.every((list) => list.tags?.includes("important"))).toBe(
+      true,
+    );
   });
 });
