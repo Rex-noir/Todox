@@ -1,3 +1,5 @@
+import CreateNewTodo from "@/components/custom/CreateNewTodoButton";
+import { CreateNewTodoList } from "@/components/custom/CreateNewTodolistButton";
 import {
   Accordion,
   AccordionContent,
@@ -33,7 +35,8 @@ export function ViewTodoList() {
     <div className="h-full w-full rounded-xl px-2">
       {isEmpty ? (
         <p className="italic text-gray-500">
-          No todos available for the current project
+          No todos available for the current project.
+          <CreateNewTodoList />
         </p>
       ) : (
         <div className="space-y-2">
@@ -54,9 +57,10 @@ export function ViewTodoList() {
                   <TodoListItem list={list} />
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="space-y-2">
+                  <div className="ml-5 space-y-2">
+                    <CreateNewTodo listId={list.id} />
                     {getTodosFromList(list.id).map((todo) => (
-                      <div key={todo.id} className="ml-5 border-b">
+                      <div key={todo.id} className="border-b">
                         <TodoItem todo={todo} />
                       </div>
                     ))}
@@ -85,7 +89,7 @@ export function TodoItem({ todo }: { todo: Todo }) {
           <p className="text-sm text-gray-600">{todo.description}</p>
           <div className="mt-1 flex items-center gap-1 text-sm text-gray-500">
             <LuCalendar className="text-gray-400" />
-            <span>{todo.due_date?.toLocaleDateString()}</span>
+            <span>{todo.due_date?.toLocaleDateString() || "Not set"}</span>
           </div>
         </div>
       </div>
