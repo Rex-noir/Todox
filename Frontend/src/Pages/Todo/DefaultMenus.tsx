@@ -1,35 +1,28 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { setCurrentViewProject } from "@/stores/todox/actions";
 import { IconType } from "react-icons";
-import { TbList, TbCalendar, TbStar } from "react-icons/tb";
+import { TbCalendar, TbStar } from "react-icons/tb";
+import { NavLink } from "react-router-dom";
 
 interface MenuItem {
   name: string;
   color: string;
-  onClick: () => void;
   icon: IconType;
+  url: string;
 }
 
 const defaultMenus: MenuItem[] = [
   {
-    name: "All",
-    color: "text-blue-500",
-    onClick: () => setCurrentViewProject(null),
-    icon: TbList,
-  },
-  {
     name: "Today",
     color: "text-green-500",
-    onClick: () => console.log("Today clicked"),
     icon: TbCalendar,
+    url: "/app/today",
   },
   {
     name: "Important",
     color: "text-yellow-500",
-    onClick: () => console.log("Important clicked"),
     icon: TbStar,
+    url: "/app/important",
   },
 ] as const;
 
@@ -55,16 +48,19 @@ const DefaultMenus: React.FC<DefaultMenusProps> = ({ closeSheet }) => {
   );
 };
 
-const MenuItem: React.FC<MenuItem> = ({ name, color, onClick, icon: Icon }) => {
+const MenuItem: React.FC<MenuItem> = ({ name, color, url, icon: Icon }) => {
   return (
-    <Button
-      variant="ghost"
-      onClick={onClick}
-      className="flex w-full items-center justify-start rounded-lg px-4 py-3 text-sm font-medium text-gray-700 transition-colors duration-200 hover:bg-gray-100"
+    <NavLink
+      to={url}
+      className={({ isActive }) =>
+        `flex w-full items-center justify-start rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-200 hover:bg-gray-100 ${
+          isActive ? "bg-gray-100 text-blue-600" : "text-gray-700"
+        }`
+      }
     >
       <Icon className={`mr-3 size-5 ${color}`} />
       {name}
-    </Button>
+    </NavLink>
   );
 };
 
