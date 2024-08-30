@@ -43,12 +43,12 @@ export interface Todo {
   readonly id: string;
   title: string;
   completed: boolean;
-  user_id: string;
+  user_id?: string;
   project_id: string;
   todoList_id: string;
   due_date?: Date;
   description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-  priority: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  priority: string;
 }

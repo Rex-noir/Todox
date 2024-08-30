@@ -86,7 +86,7 @@ export const generateTodos = (
       description: faker.lorem.sentence(),
       createdAt: faker.date.past(),
       updatedAt: faker.date.recent(),
-      priority: faker.number.int({ min: 3, max: 20 }),
+      priority: String(faker.number.int({ min: 3, max: 20 })),
     }),
     count,
   );

@@ -139,10 +139,8 @@ describe("Generator functions", () => {
       "createdAt",
       "updatedAt",
       "priority",
-      "tags",
     ]);
     expect(typeof todo.priority).toBe("number");
-    expect(Array.isArray(todo.tags)).toBe(true);
   });
 
   it("should generate multiple todos with valid properties", () => {
@@ -161,10 +159,8 @@ describe("Generator functions", () => {
         "createdAt",
         "updatedAt",
         "priority",
-        "tags",
       ]);
       expect(typeof todo.priority).toBe("number");
-      expect(Array.isArray(todo.tags)).toBe(true);
     });
   });
 
