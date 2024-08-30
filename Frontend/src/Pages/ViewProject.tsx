@@ -190,7 +190,9 @@ export function TodoListItem({ list }: { list: TodoList }) {
           </p>
           <p className="text-sm text-gray-600">{list.description}</p>
         </div>
-        <div className="flex gap-3 h-5">{list.tags?.map((tag) => <Badge>{tag}</Badge>)}</div>
+        <div className="">
+          {list.tags?.map((tag) => <Badge key={tag} className="ml-2 mr-2 mt-1">{tag}</Badge>)}
+        </div>
       </div>
     </div>
   );
