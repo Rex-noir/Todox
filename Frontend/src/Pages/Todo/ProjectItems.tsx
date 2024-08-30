@@ -1,10 +1,9 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { STATUS_COLORS } from "@/constants";
 import { Project } from "@/interfaces/types";
-import { setCurrentViewProject } from "@/stores/todox/actions";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
 import { TbSquareRounded } from "react-icons/tb";
+import { NavLink } from "react-router-dom";
 
 export function ProjectItems({ closeSheet }: { closeSheet?: () => void }) {
   const projects = useTodoxStore((state) => state.projects);
@@ -30,18 +29,17 @@ export function ProjectItems({ closeSheet }: { closeSheet?: () => void }) {
 }
 
 function ProjectItem({ id, title, status, iconColor }: Project) {
-  const isActive = useTodoxStore().currentViewProject === id;
-
   return (
-    <Button
-      onClick={() => setCurrentViewProject(id)}
+    <NavLink
+      to={`/app/projects/${id}`}
       data-testid={`project-item-${id}`}
-      variant={"ghost"}
-      className={`grid w-full grid-cols-[24px,auto] items-center justify-start gap-2 ${
-        isActive
-          ? "bg-gray-100 text-gray-900"
-          : "text-gray-600 hover:bg-neutral-100"
-      }`}
+      className={({ isActive }) =>
+        `grid w-full grid-cols-[24px,auto] items-center justify-start gap-2 rounded-md p-3 px-4 ${
+          isActive
+            ? "bg-gray-100 text-gray-900"
+            : "text-gray-600 hover:bg-neutral-100"
+        }`
+      }
     >
       <div>
         <TbSquareRounded
@@ -60,6 +58,6 @@ function ProjectItem({ id, title, status, iconColor }: Project) {
           </Badge>
         )}
       </div>
-    </Button>
+    </NavLink>
   );
 }
