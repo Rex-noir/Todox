@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { STATUS_COLORS } from "@/constants";
 import { Project } from "@/interfaces/types";
+import { setCurrentViewProject } from "@/stores/todox/actions";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
 import { TbSquareRounded } from "react-icons/tb";
-import { NavLink } from "react-router-dom";
 
 export function ProjectItems() {
   const projects = useTodoxStore((state) => state.projects);
@@ -17,7 +18,7 @@ export function ProjectItems() {
         ))
       ) : (
         <div className="flex h-full items-center justify-center">
-          <p className="text-center text-sm p-5 text-gray-500">
+          <p className="p-5 text-center text-sm text-gray-500">
             Empty Projects. Create now!
           </p>
         </div>
@@ -27,30 +28,36 @@ export function ProjectItems() {
 }
 
 function ProjectItem({ id, title, status, iconColor }: Project) {
+  const isActive = useTodoxStore().currentViewProject === id;
+
   return (
-    <NavLink
+    <Button
+      onClick={() => setCurrentViewProject(id)}
       data-testid={`project-item-${id}`}
-      to={`/project/${id}`}
-      className={({ isActive }) =>
-        `flex items-center rounded-md px-4 py-2 text-sm transition-colors duration-150 ease-in-out ${
-          isActive
-            ? "bg-gray-100 text-gray-900"
-            : "text-gray-600 hover:bg-neutral-100"
-        }`
-      }
+      variant={"ghost"}
+      className={`grid grid-cols-[24px,auto] justify-start gap-2 ${
+        isActive
+          ? "bg-gray-100 text-gray-900"
+          : "text-gray-600 hover:bg-neutral-100"
+      }`}
     >
-      <TbSquareRounded
-        className={`mr-3 size-7`}
-        style={{ color: iconColor || "#000000" }}
-      />
-      <div className="flex w-full justify-between">
-        <span>{title}</span>
+      <div>
+        <TbSquareRounded
+          className="size-6"
+          style={{ color: iconColor || "#000000" }}
+        />
+      </div>
+
+      <div className="grid w-full gap-4 sm:grid-cols-[150px,auto]">
+        <span className="overflow-hidden text-ellipsis whitespace-nowrap text-left">
+          {title}
+        </span>
         {status && (
-          <Badge className="h-fit" variant={"outline"}>
+          <Badge className="w-fi mx-auto h-fit" variant={"outline"}>
             <span className={`${STATUS_COLORS[status]}`}>{status}</span>
           </Badge>
         )}
       </div>
-    </NavLink>
+    </Button>
   );
 }
