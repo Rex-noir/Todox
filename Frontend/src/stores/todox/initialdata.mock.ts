@@ -44,5 +44,6 @@ export default () => {
     projects,
     todoLists,
     todos,
+    currentViewProject: null,
   };
 };
