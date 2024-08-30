@@ -24,8 +24,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { addTodo, getCurrentViewProject } from "@/stores/todox/actions";
+import { addTodo } from "@/stores/todox/actions";
 import { faker } from "@faker-js/faker";
+import { useParams } from "react-router-dom";
 
 export default function CreateNewTodo({ listId }: { listId: string }) {
   const [dueDate, setDueDate] = useState<Date>();
@@ -35,6 +36,7 @@ export default function CreateNewTodo({ listId }: { listId: string }) {
   const [completed, setCompleted] = useState<boolean>(false);
 
   const [open, setOpen] = useState(false);
+  const { projectId } = useParams();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,7 +47,7 @@ export default function CreateNewTodo({ listId }: { listId: string }) {
       due_date: dueDate,
       priority,
       completed,
-      project_id: getCurrentViewProject()?.id || "",
+      project_id: projectId || "",
       todoList_id: listId,
       id: faker.string.uuid(),
     });
