@@ -10,7 +10,6 @@ type State = {
   projects: NormalizedData<Project>;
   todoLists: NormalizedData<TodoList>;
   todos: NormalizedData<Todo>;
-  currentViewProject: string | null;
 };
 
 type Action = {
