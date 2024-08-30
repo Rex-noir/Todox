@@ -6,7 +6,7 @@ import { setCurrentViewProject } from "@/stores/todox/actions";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
 import { TbSquareRounded } from "react-icons/tb";
 
-export function ProjectItems() {
+export function ProjectItems({ closeSheet }: { closeSheet?: () => void }) {
   const projects = useTodoxStore((state) => state.projects);
 
   return (
@@ -14,7 +14,9 @@ export function ProjectItems() {
       <h3 className="px-1">Projects</h3>
       {Object.keys(projects).length > 0 ? (
         Object.values(projects).map((project) => (
-          <ProjectItem key={project.id} {...project} />
+          <div onClick={closeSheet} key={project.id}>
+            <ProjectItem {...project} />
+          </div>
         ))
       ) : (
         <div className="flex h-full items-center justify-center">
@@ -35,7 +37,7 @@ function ProjectItem({ id, title, status, iconColor }: Project) {
       onClick={() => setCurrentViewProject(id)}
       data-testid={`project-item-${id}`}
       variant={"ghost"}
-      className={`grid grid-cols-[24px,auto] justify-start gap-2 ${
+      className={`grid w-full grid-cols-[24px,auto] items-center justify-start gap-2 ${
         isActive
           ? "bg-gray-100 text-gray-900"
           : "text-gray-600 hover:bg-neutral-100"
@@ -48,7 +50,7 @@ function ProjectItem({ id, title, status, iconColor }: Project) {
         />
       </div>
 
-      <div className="grid w-full gap-4 sm:grid-cols-[150px,auto]">
+      <div className="grid w-full grid-cols-[120px,auto] gap-4">
         <span className="overflow-hidden text-ellipsis whitespace-nowrap text-left">
           {title}
         </span>

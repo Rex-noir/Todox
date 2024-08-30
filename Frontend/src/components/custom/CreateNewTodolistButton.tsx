@@ -39,7 +39,7 @@ export function CreateNewTodoList() {
   return (
     <Dialog defaultOpen={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>
-        <span className="ml-1 cursor-pointer text-green-500 hover:underline">
+        <span className="ml-1 flex px-1 cursor-pointer items-center justify-center gap-1 text-green-500 hover:underline">
           Add todo list
         </span>
       </DialogTrigger>

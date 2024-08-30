@@ -16,11 +16,17 @@ const defaultMenus: MenuItem[] = [
     onClick: () => setCurrentViewProject(null),
   },
 ] as const;
-export default function DefaultMenus() {
+export default function DefaultMenus({
+  closeSheet,
+}: {
+  closeSheet?: () => void;
+}) {
   return (
     <>
       {defaultMenus.map((item) => (
-        <MenuItem key={item.name} {...item} />
+        <div key={item.name} onClick={closeSheet}>
+          <MenuItem {...item} />
+        </div>
       ))}
     </>
   );
