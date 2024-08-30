@@ -1,14 +1,20 @@
+import { Button } from "@/components/ui/button";
+import { setCurrentViewProject } from "@/stores/todox/actions";
 import { TbSquareRounded } from "react-icons/tb";
-import { NavLink } from "react-router-dom";
 
 interface MenuItem {
   name: string;
-  link: string;
+  link?: string;
   color: string;
+  onClick: () => void;
 }
 
 const defaultMenus: MenuItem[] = [
-  { name: "All", link: "/todos", color: "text-blue-500" },
+  {
+    name: "All",
+    color: "text-blue-500",
+    onClick: () => setCurrentViewProject(null),
+  },
 ] as const;
 export default function DefaultMenus() {
   return (
@@ -20,20 +26,15 @@ export default function DefaultMenus() {
   );
 }
 
-function MenuItem({ link, name, color }: MenuItem) {
+function MenuItem({ name, color, onClick }: MenuItem) {
   return (
-    <NavLink
-      to={link}
-      className={({ isActive }) =>
-        `flex items-center rounded-md px-4 py-2 text-sm transition-colors duration-150 ease-in-out ${
-          isActive
-            ? "bg-gray-100 text-gray-900"
-            : "text-gray-600 hover:bg-gray-300"
-        }`
-      }
+    <Button
+      variant={"ghost"}
+      onClick={() => onClick()}
+      className={`: "text-gray-600 flex items-center justify-start rounded-md px-4 py-2 text-sm transition-colors duration-150 ease-in-out hover:bg-neutral-200`}
     >
       <TbSquareRounded className={`mr-3 size-6 ${color}`} />
       {name}
-    </NavLink>
+    </Button>
   );
 }
