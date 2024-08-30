@@ -7,7 +7,9 @@ import {
   deleteProject,
   deleteTodo,
   deleteTodoList,
-  getTodosForList,
+  getListsFromCurrentProject,
+  getTodosFromList,
+  setCurrentViewProject,
   setProjects,
   setTodoLists,
   setTodos,
@@ -52,7 +54,6 @@ const sampleTodo: Todo = {
   createdAt: new Date(),
   updatedAt: new Date(),
   priority: 1,
-  tags: ["test"],
 };
 
 describe("useTodoxStore with pre-filled data", () => {
@@ -177,7 +178,7 @@ describe("useTodoxStore with pre-filled data", () => {
 
   it("return empty array for empty todoIds", () => {
     addTodoList(sampleTodoList);
-    const todos = getTodosForList(sampleTodoList.id);
+    const todos = getTodosFromList(sampleTodoList.id);
     expect(Array.isArray(todos)).toBe(true);
   });
 
@@ -185,8 +186,17 @@ describe("useTodoxStore with pre-filled data", () => {
     addTodoList(sampleTodoList);
     addTodo(sampleTodo);
     addTodo({ ...sampleTodo, id: "2" });
-    const todos = getTodosForList(sampleTodoList.id);
+    const todos = getTodosFromList(sampleTodoList.id);
     expect(Array.isArray(todos)).toBe(true);
     expect(todos.length).toBe(2);
+  });
+
+  it("return todoList from provided project", () => {
+    addProject(sampleProject);
+    addTodoList(sampleTodoList);
+    setCurrentViewProject(sampleProject.id)
+    const todoLists = getListsFromCurrentProject();
+    expect(Array.isArray(todoLists)).toBe(true);
+    expect(todoLists.length).toBe(1);
   });
 });

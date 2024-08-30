@@ -163,7 +163,38 @@ export const setTodos = (todos: Todo[]) => {
   });
 };
 
-export const getTodosForList = (todoListId: string) => {
+export const getTodosFromList = (todoListId: string) => {
   const todoList = useTodoxStore.getState().todoLists[todoListId];
   return todoList.todoIds.map((id) => useTodoxStore.getState().todos[id]) || [];
+};
+
+export const getCurrentViewProject = () => {
+  const state = useTodoxStore.getState();
+  const currentProjectId = state.currentViewProject;
+  return currentProjectId ? state.projects[currentProjectId] : null;
+};
+
+export const getListsFromCurrentProject = () => {
+  const currentProject = getCurrentViewProject();
+  if (!currentProject) return [];
+  return (
+    currentProject.todoListIds.map(
+      (id) => useTodoxStore.getState().todoLists[id],
+    ) || []
+  );
+};
+
+export const setCurrentViewProject = (projectId: string | null) => {
+  useTodoxStore.setState((state) => {
+    state.currentViewProject = projectId;
+  });
+};
+
+export const getTodoList = (id: string) => {
+  const todoList = useTodoxStore.getState().todoLists[id];
+  return todoList || undefined;
+};
+
+export const getAllTodoLists = () => {
+  return Object.values(useTodoxStore.getState().todoLists);
 };
