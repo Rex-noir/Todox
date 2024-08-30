@@ -7,9 +7,8 @@ import {
   deleteProject,
   deleteTodo,
   deleteTodoList,
-  getListsFromCurrentProject,
+  getTodosForView,
   getTodosFromList,
-  setCurrentViewProject,
   setProjects,
   setTodoLists,
   setTodos,
@@ -18,6 +17,7 @@ import {
   updateTodoList,
 } from "@/stores/todox/actions";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
+import { isToday } from "date-fns";
 import { beforeEach, describe, expect, it } from "vitest";
 
 // Sample data for testing
@@ -53,7 +53,7 @@ const sampleTodo: Todo = {
   todoList_id: "new-todolist-id",
   createdAt: new Date(),
   updatedAt: new Date(),
-  priority: 1,
+  priority: "",
 };
 
 describe("useTodoxStore with pre-filled data", () => {
@@ -191,12 +191,14 @@ describe("useTodoxStore with pre-filled data", () => {
     expect(todos.length).toBe(2);
   });
 
-  it("return todoList from provided project", () => {
-    addProject(sampleProject);
-    addTodoList(sampleTodoList);
-    setCurrentViewProject(sampleProject.id)
-    const todoLists = getListsFromCurrentProject();
-    expect(Array.isArray(todoLists)).toBe(true);
-    expect(todoLists.length).toBe(1);
+  it("returns correct data for today view", () => {
+    addTodo({ ...sampleTodo, due_date: new Date() });
+    addTodo({ ...sampleTodo, id: "hi", due_date: new Date() });
+    const { todos, todoLists } = getTodosForView("today", undefined);
+    expect(todoLists).toHaveLength(0);
+    expect(todos).toHaveLength(2);
+    todos.forEach((todo) => {
+      expect(todo.due_date && isToday(new Date(todo.due_date))).toBe(true);
+    });
   });
 });
