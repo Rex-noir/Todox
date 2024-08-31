@@ -84,7 +84,7 @@ export function ViewProject() {
                     </AccordionTrigger>
                     <AccordionContent>
                       <motion.div layout className="ml-5 space-y-2">
-                        <CreateNewTodo listId={list.id} />
+                        <CreateNewTodo listIdParam={list.id} />
                         <AnimatePresence>
                           {sortTodos(getTodosFromList(list.id)).map((todo) => (
                             <TodoItem key={todo.id} todo={todo} />
