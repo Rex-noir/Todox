@@ -14,6 +14,7 @@ import { Textarea } from "../ui/textarea";
 import { addTodoList } from "@/stores/todox/actions";
 import { faker } from "@faker-js/faker";
 import { useParams } from "react-router-dom";
+import { PlusIcon } from "@radix-ui/react-icons";
 
 export function CreateNewTodoList() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,10 +44,15 @@ export function CreateNewTodoList() {
   };
   return (
     <Dialog defaultOpen={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger>
-        <span className="ml-1 flex cursor-pointer items-center justify-center gap-1 px-1 text-green-500 hover:underline">
-          Add todo list
-        </span>
+      <DialogTrigger asChild>
+        <Button
+          className="w-fit items-center gap-3 text-gray-500"
+          variant={"link"}
+          size={"sm"}
+        >
+          <PlusIcon />
+          <span>Add List</span>
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
