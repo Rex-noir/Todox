@@ -20,6 +20,7 @@ class Todo extends Model
         'completed',
         'due_date',
         'priority',
+        'todo_list_id',
         'user_id',
     ];
 
