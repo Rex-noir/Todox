@@ -1,13 +1,12 @@
 import MobileHeader from "./MobileHeader";
 import LayoutMenu from "./LargeScreenMenu";
 import { useEffect, useState } from "react";
-import { CreateNewTodoList } from "@/components/custom/CreateNewTodolistButton";
 import { Outlet, useParams } from "react-router-dom";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
 
 export const Todos = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { viewType, projectId } = useParams();
+  const { projectId } = useParams();
 
   useEffect(() => {
     const updateScroll = () => {
@@ -18,13 +17,9 @@ export const Todos = () => {
   }, []);
 
   const getTitle = () => {
-    if (viewType?.startsWith("project") && projectId) {
+    if (projectId) {
       const project = useTodoxStore.getState().projects[projectId];
       return project ? project.title : "Unknown Project";
-    } else {
-      return viewType
-        ? viewType.charAt(0).toUpperCase() + viewType.slice(1)
-        : "All Tasks";
     }
   };
 
@@ -39,16 +34,6 @@ export const Todos = () => {
         </div>
         <main className="row-start-2 h-full md:row-start-1">
           <div className="min-h-screen w-full rounded-md sm:p-3 md:px-10 lg:p-10 lg:px-32">
-            <div className="flex w-full flex-col items-start gap-1 border-b pb-2">
-              <h1
-                className={`px-2 text-2xl font-semibold transition-opacity duration-300 ease-in-out ${
-                  isScrolled ? "opacity-0" : "opacity-100"
-                }`}
-              >
-                {getTitle()}
-              </h1>
-              <CreateNewTodoList />
-            </div>
             <Outlet />
           </div>
         </main>
