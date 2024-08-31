@@ -56,4 +56,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class);
     }
+
+    public function todoLists(): HasMany
+    {
+        return $this->hasMany(TodoList::class);
+    }
 }

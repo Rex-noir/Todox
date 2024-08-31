@@ -27,4 +27,9 @@ class Todo extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function todoList(): BelongsTo
+    {
+        return $this->belongsTo(TodoList::class);
+    }
 }

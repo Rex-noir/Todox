@@ -7,15 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Project extends Model
+class TodoList extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         "title",
+        "project_id",
         "description",
-        "status",
-        "iconColor",
+        "todo_id",
+        "tags",
         "user_id"
     ];
 
@@ -24,8 +25,13 @@ class Project extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function todoLists(): HasMany
+    public function Projects(): BelongsTo
     {
-        return $this->hasMany(TodoList::class);
+        return $this->belongsTo(Project::class);
+    }
+
+    public function Tasks(): HasMany
+    {
+        return $this->hasMany(Todo::class);
     }
 }
