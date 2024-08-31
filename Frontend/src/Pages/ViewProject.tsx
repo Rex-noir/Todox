@@ -10,7 +10,8 @@ import { Todo, TodoList } from "@/interfaces/types";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  getTodosForView,
+  getListFromProject,
+  getTodosForProject,
   getTodosFromList,
   updateTodo,
 } from "@/stores/todox/actions";
@@ -19,6 +20,7 @@ import { format } from "date-fns";
 import { LuCalendar } from "react-icons/lu";
 import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { CreateNewTodoList } from "@/components/custom/CreateNewTodolistButton";
 
 const sortTodos = (todos: Todo[]) => {
   return todos.sort((a, b) => {
@@ -43,13 +45,20 @@ const sortTodos = (todos: Todo[]) => {
 };
 
 export function ViewProject() {
-  const { viewType, projectId } = useParams();
+  const { projectId } = useParams();
 
-  const { todoLists, todos } = getTodosForView(viewType, projectId);
+  const todoLists = getListFromProject(projectId);
 
-  const isEmpty = todos.length === 0;
+  const isEmpty = getTodosForProject(projectId).length === 0;
 
   const allListId = Object.keys(useTodoxStore().todoLists).map((id) => id);
+
+  const getTitle = () => {
+    if (projectId) {
+      const project = useTodoxStore.getState().projects[projectId];
+      return project ? project.title : "Unknown Project";
+    }
+  };
 
   return (
     <motion.div
@@ -68,6 +77,14 @@ export function ViewProject() {
         </motion.p>
       ) : (
         <motion.div layout className="h-full space-y-2">
+          <div className="flex w-full flex-col items-start gap-1 border-b pb-2">
+            <h1
+              className={`px-2 text-2xl font-semibold transition-opacity duration-300 ease-in-out`}
+            >
+              {getTitle()}
+            </h1>
+            <CreateNewTodoList />
+          </div>
           <AnimatePresence>
             {todoLists.map((list, index) => (
               <motion.div
@@ -191,7 +208,11 @@ export function TodoListItem({ list }: { list: TodoList }) {
           <p className="text-sm text-gray-600">{list.description}</p>
         </div>
         <div className="">
-          {list.tags?.map((tag) => <Badge key={tag} className="ml-2 mr-2 mt-1">{tag}</Badge>)}
+          {list.tags?.map((tag) => (
+            <Badge key={tag} className="ml-2 mr-2 mt-1">
+              {tag}
+            </Badge>
+          ))}
         </div>
       </div>
     </div>
