@@ -194,10 +194,11 @@ describe("useTodoxStore with pre-filled data", () => {
   });
 
   it("returns correct data for today view", () => {
+    const todosO = getTodayTodos();
     addTodo({ ...sampleTodo, due_date: new Date() });
     addTodo({ ...sampleTodo, id: "hi", due_date: new Date() });
     const todos = getTodayTodos();
-    expect(todos).toHaveLength(2);
+    expect(todos).toHaveLength(todosO.length + 2);
     todos.forEach((todo) => {
       expect(todo.due_date && isToday(new Date(todo.due_date))).toBe(true);
     });
