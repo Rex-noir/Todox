@@ -12,17 +12,28 @@ import { ProjectItems } from "./ProjectItems";
 import { Separator } from "@/components/ui/separator";
 import CreateNewProjectButton from "@/components/custom/CreateNewProjectButton";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
 export default function MobileHeader({
   projectTitle,
 }: {
   projectTitle?: string;
 }) {
+  const location = useLocation();
+
+  const getRouteTitle = () => {
+    const path = location.pathname;
+    if (path.includes("/app/today")) return "Today";
+    if (path.includes("/app/important")) return "Important";
+    if (path.includes("/app/projects")) return "Projects";
+    return "All";
+  };
+
   return (
     <div className="flex items-center justify-between bg-neutral-100 p-2">
       <Navigation />
       <div className="truncate text-ellipsis text-lg font-semibold">
-        {projectTitle ?? "All"}
+        {projectTitle ?? getRouteTitle()}
       </div>
       <Avatar>
         <AvatarFallback className="bg-gray-300">Hi</AvatarFallback>
