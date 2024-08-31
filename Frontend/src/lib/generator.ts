@@ -88,7 +88,7 @@ export const generateTodos = (
       user_id: faker.string.uuid(),
       project_id: faker.string.uuid(),
       todoList_id: todoList_id || faker.string.uuid(),
-      due_date: faker.date.future(),
+      due_date: new Date(),
       description: faker.lorem.sentence(),
       createdAt: faker.date.past(),
       updatedAt: faker.date.recent(),
