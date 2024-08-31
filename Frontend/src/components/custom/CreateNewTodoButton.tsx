@@ -1,21 +1,11 @@
+import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Textarea } from "../ui/textarea";
-import { CalendarIcon } from "@radix-ui/react-icons";
+import { CalendarIcon, PlusIcon } from "@radix-ui/react-icons";
 import { Calendar } from "../ui/calendar";
-import { useState } from "react";
 import { format } from "date-fns";
 import {
   Select,
@@ -24,22 +14,64 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { addTodo } from "@/stores/todox/actions";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  addTodo,
+  getAllProjects,
+  getListFromProject,
+} from "@/stores/todox/actions";
 import { faker } from "@faker-js/faker";
 import { useParams } from "react-router-dom";
+import { Project, TodoList } from "@/interfaces/types";
 
-export default function CreateNewTodo({ listId }: { listId: string }) {
+export default function CreateNewTodo({
+  listIdParam,
+}: {
+  listIdParam?: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
   const [dueDate, setDueDate] = useState<Date>();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [priority, setPriority] = useState<string>("");
   const [completed, setCompleted] = useState<boolean>(false);
+  const [projectId, setProjectId] = useState<string>("");
+  const [listId, setListId] = useState(listIdParam || "");
 
-  const [open, setOpen] = useState(false);
-  const { projectId } = useParams();
+  const { projectId: routeProjectId } = useParams();
+
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [availableTodoLists, setAvailableTodoLists] = useState<TodoList[]>([]);
+
+  useEffect(() => {
+    const fetchedProjects = getAllProjects();
+    setProjects(Array.isArray(fetchedProjects) ? fetchedProjects : []);
+
+    if (routeProjectId) {
+      setProjectId(routeProjectId);
+    }
+  }, [routeProjectId]);
+
+  useEffect(() => {
+    if (projectId) {
+      const todoLists = getListFromProject(projectId);
+      setAvailableTodoLists(Array.isArray(todoLists) ? todoLists : []);
+    } else {
+      setAvailableTodoLists([]);
+    }
+  }, [projectId]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!projectId || !listId) {
+      alert("Please select both a project and a parent list.");
+      return;
+    }
 
     addTodo({
       title,
@@ -47,67 +79,82 @@ export default function CreateNewTodo({ listId }: { listId: string }) {
       due_date: dueDate,
       priority,
       completed,
-      project_id: projectId || "",
+      project_id: projectId,
       todoList_id: listId,
       id: faker.string.uuid(),
     });
 
-    setOpen(false);
+    setIsOpen(false);
+    resetForm();
+  };
+
+  const resetForm = () => {
     setTitle("");
     setDescription("");
     setDueDate(undefined);
     setPriority("");
     setCompleted(false);
+    setProjectId("");
+    setListId("");
+  };
+
+  const handleCancel = () => {
+    resetForm();
+    setIsOpen(false);
   };
 
   return (
-    <>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger>
-          <span className="px-2 text-sm text-green-500 hover:underline">
-            Create new todo
-          </span>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader className="text-left">
-            <DialogTitle>Create new Todo!</DialogTitle>
-            <DialogDescription>Create a new thing to do!</DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                id="title"
-                required
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                id="description"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="due_date">Due Date</Label>
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
+      <div className="flex items-center space-x-4">
+        <CollapsibleTrigger asChild>
+          <Button
+            className="w-fit items-center gap-3 text-gray-500"
+            variant={"link"}
+            size={"sm"}
+          >
+            <PlusIcon />
+            <span>Add Task</span>
+          </Button>
+        </CollapsibleTrigger>
+      </div>
+      <CollapsibleContent className="space-y-2">
+        <form
+          onSubmit={handleSubmit}
+          className="flex w-full flex-col gap-2 rounded-md border-2 p-2"
+        >
+          <div className="flex border-collapse flex-col">
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              id="title"
+              required
+              placeholder="Title"
+              className="border-none text-xl font-semibold shadow-none focus-visible:ring-0"
+            />
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              id="description"
+              placeholder="Description"
+              rows={2}
+              className="resize-none border-none shadow-none focus-visible:ring-0"
+            />
+          </div>
+          <div className="flex flex-wrap gap-2 border-b pb-2">
+            <div>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
                     className={cn(
-                      "w-[280px] justify-start text-left font-normal",
+                      "w-fit justify-start text-left font-normal",
                       !dueDate && "text-muted-foreground",
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dueDate ? (
-                      format(dueDate, "PPP")
-                    ) : (
-                      <span>Pick a date</span>
-                    )}
+                    {dueDate
+                      ? format(dueDate, "PPP")
+                      : format(new Date(), "PPP")}
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
@@ -121,34 +168,70 @@ export default function CreateNewTodo({ listId }: { listId: string }) {
                 </PopoverContent>
               </Popover>
             </div>
-            <div className="flex flex-col gap-2">
+
+            <div>
               <Select onValueChange={(value) => setPriority(value)}>
-                <SelectTrigger>
+                <SelectTrigger className="w-fit">
                   <SelectValue placeholder="Select priority" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="0">0</SelectItem>
-                  <SelectItem value="1">1</SelectItem>
-                  <SelectItem value="2">2</SelectItem>
-                  <SelectItem value="3">3</SelectItem>
+                  {Array.from({ length: 4 }, (_, i) => (
+                    <SelectItem key={i} value={`${i + 1}`}>
+                      Priority {i + 1}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="completed">Completed</Label>
-              <Checkbox
-                checked={completed}
-                onCheckedChange={(value) => setCompleted(value as boolean)}
-                className="size-6"
-                id="completed"
-              />
+
+            <div>
+              <Select
+                value={projectId}
+                onValueChange={(value) => setProjectId(value)}
+              >
+                <SelectTrigger className="w-fit">
+                  <SelectValue placeholder="Select project" />
+                </SelectTrigger>
+                <SelectContent>
+                  {projects.map((project) => (
+                    <SelectItem key={project.id} value={project.id}>
+                      {project.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <div className="self-end">
-              <Button type="submit">Create</Button>
+
+            <div>
+              <Select
+                value={listId}
+                onValueChange={(value) => setListId(value)}
+              >
+                <SelectTrigger className="w-fit">
+                  <SelectValue placeholder="Select parent list" />
+                </SelectTrigger>
+                <SelectContent>
+                  {projectId ? (
+                    availableTodoLists.map((list) => (
+                      <SelectItem key={list.id} value={list.id}>
+                        {list.title}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <div>Select a project to see the list</div>
+                  )}
+                </SelectContent>
+              </Select>
             </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </>
+          </div>
+          <div className="flex gap-2 self-end">
+            <Button onClick={handleCancel} type="button" variant={"outline"}>
+              Cancel
+            </Button>
+            <Button type="submit">Create</Button>
+          </div>
+        </form>
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
