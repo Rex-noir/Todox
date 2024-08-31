@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { Todos } from "@/Pages/Todo/Todos";
 import { ViewProject } from "@/Pages/ViewProject";
+import { TodayPage } from "@/Pages/Today";
 
 const router = createBrowserRouter([
   {
@@ -16,16 +17,16 @@ const router = createBrowserRouter([
         element: <Navigate to={"/app/today"} />,
       },
       {
-        path: "/app/:viewType/:projectId",
+        path: "/app/projects/:projectId",
         element: <ViewProject />,
       },
       {
-        path: "/app/:viewType",
-        element: <ViewProject />,
+        path: "/app/today",
+        element: <TodayPage />,
       },
       {
-        path: "/app/:viewType",
-        element: <ViewProject />,
+        path: "/app/important",
+        element: <TodayPage />,
       },
     ],
   },
