@@ -168,7 +168,7 @@ export const getTodosFromList = (todoListId: string) => {
   return todoList.todoIds.map((id) => useTodoxStore.getState().todos[id]) || [];
 };
 
-export const getProjects = () => {
+export const getAllProjects = () => {
   return Object.values(useTodoxStore.getState().projects);
 };
 
@@ -181,9 +181,10 @@ export const getListFromProject = (projectId: string | undefined) => {
   );
 };
 
-export const getTodoList = (id: string) => {
+export const getTodoList = (id: string | null) => {
+  if (!id) return [];
   const todoList = useTodoxStore.getState().todoLists[id];
-  return todoList || undefined;
+  return todoList;
 };
 
 export const getAllTodoLists = () => {
