@@ -36,6 +36,8 @@ export function CreateNewTodoList() {
       project_id: projectId || "",
     });
 
+    setIsOpen(false);
+
     setTitle("");
     setDescription("");
   };
