@@ -68,8 +68,8 @@ export default function CreateNewTodo({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!projectId || !listId) {
-      alert("Please select both a project and a parent list.");
+    if (projectId && !listId) {
+      alert("Please select list for parent.");
       return;
     }
 
@@ -82,6 +82,7 @@ export default function CreateNewTodo({
       project_id: projectId,
       todoList_id: listId,
       id: faker.string.uuid(),
+      createdAt: new Date(),
     });
 
     setIsOpen(false);
@@ -91,7 +92,6 @@ export default function CreateNewTodo({
   const resetForm = () => {
     setTitle("");
     setDescription("");
-    setDueDate(undefined);
     setPriority("");
     setCompleted(false);
   };
