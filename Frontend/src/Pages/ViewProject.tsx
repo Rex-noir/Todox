@@ -21,28 +21,7 @@ import { LuCalendar } from "react-icons/lu";
 import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { CreateNewTodoList } from "@/components/custom/CreateNewTodolistButton";
-
-const sortTodos = (todos: Todo[]) => {
-  return todos.sort((a, b) => {
-    if (a.completed !== b.completed) {
-      return a.completed ? 1 : -1;
-    }
-
-    if (a.completed && b.completed) {
-      return (
-        new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime()
-      );
-    }
-
-    const priorityA = parseInt(a.priority, 10);
-    const priorityB = parseInt(b.priority, 10);
-    if (priorityA !== priorityB) {
-      return priorityA - priorityB;
-    }
-
-    return new Date(a.createdAt!).getTime() - new Date(b.createdAt!).getTime();
-  });
-};
+import sortTodos from "@/lib/sortTodos";
 
 export function ViewProject() {
   const { projectId } = useParams();
