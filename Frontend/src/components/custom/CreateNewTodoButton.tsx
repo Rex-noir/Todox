@@ -34,7 +34,7 @@ export default function CreateNewTodo({
   listIdParam?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [dueDate, setDueDate] = useState<Date>();
+  const [dueDate, setDueDate] = useState<Date | undefined>(new Date());
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [priority, setPriority] = useState<string>("");
@@ -94,8 +94,6 @@ export default function CreateNewTodo({
     setDueDate(undefined);
     setPriority("");
     setCompleted(false);
-    setProjectId("");
-    setListId("");
   };
 
   const handleCancel = () => {
