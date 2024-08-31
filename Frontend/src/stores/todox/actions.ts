@@ -190,44 +190,25 @@ export const getAllTodoLists = () => {
   return Object.values(useTodoxStore.getState().todoLists);
 };
 
-export const getTodosForView = (
-  viewType: string | undefined,
-  projectId: string | undefined,
-) => {
-  const state = useTodoxStore.getState();
-  let todos: Todo[] = [];
-  let todoLists: TodoList[] = [];
+export const getImportantTodosList = () => {
+  return Object.values(useTodoxStore.getState().todoLists).filter((list) =>
+    list.tags?.includes("important"),
+  );
+};
 
-  switch (viewType) {
-    case "projects":
-      if (projectId) {
-        const project = state.projects[projectId];
-        if (project) {
-          todoLists = project.todoListIds
-            .map((id) => state.todoLists[id])
-            .filter(Boolean);
-          todos = todoLists.flatMap((list) =>
-            list.todoIds.map((id) => state.todos[id]).filter(Boolean),
-          );
-        }
-      }
-      break;
-    case "important":
-      todoLists = Object.values(state.todoLists).filter((list) =>
-        list?.tags?.includes("important"),
-      );
-      todos = todoLists.flatMap((list) =>
-        list.todoIds.map((id) => state.todos[id]).filter(Boolean),
-      );
-      break;
-    case "today":
-      todos = Object.values(state.todos).filter(
-        (todo) => todo.due_date && isToday(new Date(todo.due_date)),
-      );
-      break;
-    default:
-      break;
-  }
+export const getTodosForProject = (projectId: string | undefined) => {
+  if (!projectId) return [];
+  const project = useTodoxStore.getState().projects[projectId];
+  if (!project) return [];
+  return project.todoListIds
+    .map((id) => useTodoxStore.getState().todoLists[id])
+    .flatMap((list) =>
+      list.todoIds.map((id) => useTodoxStore.getState().todos[id]),
+    );
+};
 
-  return { todos, todoLists };
+export const getTodayTodos = () => {
+  return Object.values(useTodoxStore.getState().todos).filter(
+    (todo) => todo.due_date && isToday(new Date(todo.due_date)),
+  );
 };

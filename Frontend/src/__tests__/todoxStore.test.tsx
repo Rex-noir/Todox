@@ -7,7 +7,8 @@ import {
   deleteProject,
   deleteTodo,
   deleteTodoList,
-  getTodosForView,
+  getImportantTodosList,
+  getTodayTodos,
   getTodosFromList,
   setProjects,
   setTodoLists,
@@ -195,8 +196,7 @@ describe("useTodoxStore with pre-filled data", () => {
   it("returns correct data for today view", () => {
     addTodo({ ...sampleTodo, due_date: new Date() });
     addTodo({ ...sampleTodo, id: "hi", due_date: new Date() });
-    const { todos, todoLists } = getTodosForView("today", undefined);
-    expect(todoLists).toHaveLength(0);
+    const todos = getTodayTodos();
     expect(todos).toHaveLength(2);
     todos.forEach((todo) => {
       expect(todo.due_date && isToday(new Date(todo.due_date))).toBe(true);
@@ -215,7 +215,7 @@ describe("useTodoxStore with pre-filled data", () => {
       tags: ["important"],
     });
 
-    const { todoLists } = getTodosForView("important", undefined);
+    const todoLists = getImportantTodosList();
 
     expect(todoLists.every((list) => list.tags?.includes("important"))).toBe(
       true,
