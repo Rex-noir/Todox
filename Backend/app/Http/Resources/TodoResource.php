@@ -21,6 +21,9 @@ class TodoResource extends JsonResource
             'completed' => $this->completed,
             'due_date' => $this->due_date,
             'priority' => $this->priority,
+            'todo_list_id' => $this->todo_list_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

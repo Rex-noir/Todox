@@ -20,6 +20,8 @@ class ProjectResource extends JsonResource
             "description" => $this->description,
             "status" => $this->status,
             "iconColor" => $this->iconColor,
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at
         ];
     }
 }

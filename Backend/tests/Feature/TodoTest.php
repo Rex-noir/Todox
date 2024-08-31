@@ -9,197 +9,152 @@ use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
 use function PHPUnit\Framework\assertNull;
 
 uses(RefreshDatabase::class);
 
-describe("Without HTTP Requests", function () {
+describe("API TEST for Todos", function () {
 
-    it('can create a todo item', function () {
-        /** @var User $user */
-        $user = User::factory()->create();
+    describe("CREATE", function () {
 
-        $todo = Todo::factory()->for($user)->create();
+        beforeEach(function () {
+            /** @var User $this->user */
+            $this->user = User::factory()->create();
+            $this->todos = Todo::factory(10)->for($this->user)->create();
+        });
 
-        assertDatabaseHas('todos', [
-            'title' => $todo->title,
-            'description' => $todo->description,
-            'completed' => $todo->completed,
-            'due_date' => $todo->due_date,
-            'priority' => $todo->priority,
-            'user_id' => $user->id,
-        ]);
 
-        expect($user->todos()->count())->toBe(1);
+        it("can create a todo with valid body", function () {
+            $todoData = [
+                'title' => 'New Todo',
+                'description' => 'New description',
+                'completed' => false,
+                'due_date' => '2023-12-31',
+                'priority' => 1,
+            ];
 
-        expect($user->todos->first()->title)->toBe($todo->title);
+            actingAs($this->user);
+            $response = postJson("/api/todos", $todoData);
+            $response->assertStatus(201);
+
+            assertDatabaseHas('todos', [
+                'title' => $todoData['title'],
+                'description' => $todoData['description'],
+                'completed' => $todoData['completed'],
+                'due_date' => $todoData['due_date'],
+                'priority' => $todoData['priority'],
+                'user_id' => $this->user->id,
+            ]);
+        });
+
+        it("cannot create a todo with invalid body", function () {
+            $todoData = [
+                'title' => null,
+                'description' => 'New description',
+                'completed' => false,
+                'due_date' => '2023-12-31',
+                'priority' => 1,
+            ];
+
+            actingAs($this->user);
+            $response = postJson("/api/todos", $todoData);
+            $response->assertStatus(422);
+        });
     });
 
-    it("can update todo item", function () {
+    describe("READ", function () {
 
-        /** @var User $user */
-        $user = User::factory()->create();
+        beforeEach(function () {
+            /** @var User $this->user */
+            $this->user = User::factory()->create();
+            $this->todos = Todo::factory(10)->for($this->user)->create();
+        });
 
-        $todo = Todo::factory()->for($user)->create();
 
-        $updatedData = [
-            'title' => "Updated title",
-            'description' => "Updated description",
-            'completed' => true,
-            'priority' => 2,
-        ];
+        it("can index todos for authenticated user", function () {
+            actingAs($this->user);
+            $response = getJson("/api/todos");
+            $response->assertStatus(200);
+            $response->assertJsonCount(10, 'data');
+        });
 
-        $todo->update($updatedData);
-
-        assertDatabaseHas('todos', [
-            'id' => $todo->id,
-            'user_id' => $user->id,
-            ...$updatedData
-        ]);
-
-        $updatedTodo = $todo->fresh();
-
-        expect($updatedTodo)->title->toBe($updatedData['title'])
-            ->description->toBe($updatedData['description'])
-            ->completed->toBe($updatedData['completed'])
-            ->priority->toBe($updatedData['priority']);
+        it("cannot index todos for unauthenticated user", function () {
+            $response = getJson("/api/todos");
+            $response->assertUnauthorized();
+        });
     });
 
-    it('can delete todo item', function () {
+    describe("UPDATE", function () {
 
-        /** @var User $user */
-        $user = User::factory()->create();
+        beforeEach(function () {
+            /** @var User $this->user */
+            $this->user = User::factory()->create();
+            $this->todos = Todo::factory(10)->for($this->user)->create();
+        });
 
-        $todo = Todo::factory()->for($user)->create();
 
+        it('can update a todo with valid body', function () {
+            $todo = $this->todos->first();
+            $updatedData = [
+                'title' => 'Updated Todo Title',
+                'description' => 'Updated description',
+                'completed' => true,
+                'due_date' => '2023-12-31',
+                'priority' => 2,
+            ];
 
-        assertDatabaseHas('todos', ['id' => $todo->id]);
+            actingAs($this->user);
+            $response = putJson("/api/todos/{$todo->id}", $updatedData);
+            $response->assertStatus(204);
 
-        $todo->delete();
+            assertDatabaseHas('todos', [
+                'id' => $todo->id,
+                ...$updatedData
+            ]);
+        });
 
-        assertDatabaseMissing('todos', ['id' => $todo->id]);
+        it('cannot update a todo with invalid body', function () {
+            $todo = $this->todos->first();
+            $invalidData = [
+                'title' => null,
+                'description' => 'Updated description',
+                'completed' => "helloo",
+                'due_date' => '2023-12-31',
+                'priority' => "hi",
+            ];
 
-        assertNull(Todo::find($todo->id));
-
-        expect($user->todos()->count())->toBe(0);
-    });
-});
-
-test("api for todos is defined", function () {
-
-    /** @var User $user */
-    $user = User::factory()->create();
-    Todo::factory(10)->for($user)->create();
-
-    $response = actingAs($user)
-        ->get('/api/todos');
-
-    $response->assertStatus(200);
-    $response->assertJsonCount(10, 'data');
-});
-
-describe("With api Routes", function () {
-
-    beforeEach(function () {
-        /** @var User $this->user */
-        $this->user = User::factory()->create();
-        $this->todos = Todo::factory(10)->for($this->user)->create();
-    });
-
-    it("can index with authenticated users", function () {
-        actingAs($this->user);
-        $response = getJson('/api/todos');
-        $response->assertStatus(200);
-        $response->assertJsonCount(10, 'data');
+            actingAs($this->user);
+            $response = putJson("/api/todos/{$todo->id}", $invalidData);
+            $response->assertStatus(422);
+        });
     });
 
-    it("cannot index with unauthenticated users", function () {
+    describe("DELETE", function () {
 
-        $response = getJson('/api/todos');
-        $response->assertUnauthorized();
-    });
-
-
-    it('Can update a todo with valid body', function () {
-
-        $todo = $this->todos->first();
-        $updatedData = [
-            'title' => 'Updated Todo Title',
-            'description' => 'Updated description',
-            'completed' => true,
-            'due_date' => '2023-12-31',
-            'priority' => 2,
-        ];
-
-        $response = actingAs($this->user)->putJson("api/todos/{$todo->id}", $updatedData);
-
-        $response->assertStatus(204);
-
-        assertDatabaseHas('todos', [
-            'id' => $todo->id,
-            'title' => $updatedData['title'],
-            'description' => $updatedData['description'],
-            'completed' => $updatedData['completed'],
-            'due_date' => $updatedData['due_date'],
-            'priority' => $updatedData['priority'],
-        ]);
-    });
-
-    it('Cannot update a todo with invalid body', function () {
-
-        $todo = $this->todos->first();
-        $updatedData = [
-            'title' => null,
-            'description' => 'Updated description',
-            'completed' => "helloo",
-            'due_date' => '2023-12-31',
-            'priority' => "hi",
-        ];
-
-        $response = actingAs($this->user)->putJson("api/todos/{$todo->id}", $updatedData);
-
-        $response->assertStatus(422);
+        beforeEach(function () {
+            /** @var User $this->user */
+            $this->user = User::factory()->create();
+            $this->todos = Todo::factory(10)->for($this->user)->create();
+        });
 
 
-    });
+        it("can delete a todo", function () {
+            $todo = $this->todos->first();
 
-    it("Can delete a todo", function () {
-        $todo = $this->todos->first();
+            actingAs($this->user);
+            $response = deleteJson("/api/todos/{$todo->id}");
+            $response->assertStatus(204);
 
-        $response = actingAs($this->user)->delete("api/todos/{$todo->id}");
+            assertDatabaseMissing('todos', ['id' => $todo->id]);
+            assertNull(Todo::find($todo->id));
+        });
 
-        $response->assertStatus(204);
-    });
-
-    it("Cannot delete a todo with unauthenticated user", function () {
-        $todo = $this->todos->first();
-        $response = deleteJson("api/todos/{$todo->id}");
-        $response->assertStatus(401);
-    });
-
-    it("Can create a todo with valid body", function () {
-        $todoData = [
-            'title' => 'New Todo',
-            'description' => 'New description',
-            'completed' => false,
-            'due_date' => '2023-12-31',
-            'priority' => 1,
-        ];
-
-        $response = actingAs($this->user)->postJson("api/todos", $todoData);
-        $response->assertStatus(201);
-    });
-
-    it("Cannot create a todo with invalid body", function () {
-        $todoData = [
-            'title' => null,
-            'description' => 'New description',
-            'completed' => false,
-            'due_date' => '2023-12-31',
-            'priority' => 1,
-        ];
-        $response = actingAs($this->user)->postJson("api/todos", $todoData);
-        $response->assertStatus(422);
+        it("cannot delete a todo for unauthenticated user", function () {
+            $todo = $this->todos->first();
+            $response = deleteJson("/api/todos/{$todo->id}");
+            $response->assertStatus(401);
+        });
     });
 });

@@ -55,4 +55,23 @@ class ProjectRequest extends FormRequest
             ],
         };
     }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'The title is required.',
+            'title.string' => 'The title must be a valid string.',
+            'title.max' => 'The title may not be greater than 255 characters.',
+            'description.string' => 'The description must be a valid string.',
+            'status.string' => 'The status must be a valid string.',
+            'status.in' => 'The selected status is invalid. Allowed values are: ' . implode(', ', array_column(ProjectStatus::cases(), 'value')) . '.',
+            'iconColor.string' => 'The icon color must be a valid string.',
+            'iconColor.max' => 'The icon color may not be greater than 7 characters.',
+        ];
+    }
 }

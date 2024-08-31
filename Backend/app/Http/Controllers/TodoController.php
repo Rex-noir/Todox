@@ -26,8 +26,6 @@ class TodoController extends Controller
      */
     public function store(TodoRequest $request)
     {
-        $this->authorize('create', Todo::class);
-
         $todo = new Todo($request->validated());
         $todo->user()->associate(Auth::user());
         $todo->save();
@@ -49,14 +47,13 @@ class TodoController extends Controller
     public function update(TodoRequest $request, string $id)
     {
         $todo = Todo::find($id);
-        $this->authorize('update', $todo);
         $todo->update($request->validated());
         return response(null, 204);
     }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(TodoRequest $request, string $id)
     {
         /**
          * @var Todo $todo.

@@ -80,7 +80,7 @@ describe("API Test", function () {
             actingAs($this->user);
             $response = getJson("/api/projects/{$this->sampleProject->id}");
             $response->assertStatus(200);
-            $response->assertJsonCount(5, "data");
+            $response->assertJsonCount(7, "data");
         });
 
         it("doesn't return if the user is not the owner", function () {

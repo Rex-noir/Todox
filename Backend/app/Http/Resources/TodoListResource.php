@@ -21,6 +21,8 @@ class TodoListResource extends JsonResource
             "todo_id" => $this->todo_id,
             "project_id" => $this->project_id,
             "tags" => $this->tags,
+            "created_at" => $this->created_at,
+            "updated_at" => $this->updated_at
         ];
     }
 }

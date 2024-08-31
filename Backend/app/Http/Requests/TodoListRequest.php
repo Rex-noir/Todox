@@ -41,4 +41,24 @@ class TodoListRequest extends FormRequest
             ]
         };
     }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'The title is required.',
+            'title.string' => 'The title must be a valid string.',
+            'title.max' => 'The title may not be greater than 255 characters.',
+            'description.string' => 'The description must be a valid string.',
+            'project_id.required' => 'The project ID is required.',
+            'project_id.exists' => 'The selected project does not exist in our records.',
+            'todo_id.exists' => 'The selected todo item does not exist in our records.',
+            'tags.json' => 'The tags field must be a valid JSON string.',
+        ];
+    }
+
 }
