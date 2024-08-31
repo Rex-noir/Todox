@@ -42,7 +42,7 @@ class ProjectController extends Controller
     public function show(string $id)
     {
         $project = Project::findOrFail($id);
-
+        $this->authorize("view", $project);
         return new ProjectResource($project);
     }
 
