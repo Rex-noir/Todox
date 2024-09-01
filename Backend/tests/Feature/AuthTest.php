@@ -7,6 +7,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\withMiddleware;
 use function Pest\Laravel\deleteJson;
+use function Pest\Laravel\getJson;
 
 uses(RefreshDatabase::class);
 
@@ -86,5 +87,15 @@ test("web-logout successfully", function () {
     $response->assertOk();
 });
 
-// You can add more tests here for specific validation rules
-// for example, testing registration with a duplicate email
+test("can get user detail", function () {
+
+    /** @var \App\Models\User $user */
+    $user = User::factory()->create();
+
+    actingAs($user);
+
+    $response = getJson(uri: "/api/user");
+
+    dd($response);
+    $response->assertOk();
+});
