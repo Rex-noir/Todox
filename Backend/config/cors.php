@@ -15,11 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'api/sanctum/csrf-cookie',],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => explode(',', env('SANCTUM_STATEFUL_DOMAINS')),
 
     'allowed_origins_patterns' => [],
 
