@@ -11,7 +11,9 @@ export function TodayPage() {
   const completed = sortedTodos.filter((todo) => todo.completed);
 
   return (
-    <div>
+    <div
+      className="w-full max-w-lg" // Add max-w-3xl or adjust as needed
+    >
       <div className="flex flex-col gap-2 px-2">
         <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl">
           Today
