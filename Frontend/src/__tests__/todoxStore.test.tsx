@@ -51,7 +51,6 @@ const sampleTodo: Todo = {
   title: "Test Todo",
   completed: false,
   user_id: "1",
-  project_id: "new-project-id",
   todoList_id: "new-todolist-id",
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -77,7 +76,7 @@ describe("useTodoxStore with pre-filled data", () => {
       expect(state.projects[sampleProject.id]).toMatchObject(sampleProject);
 
       const updatedProject = { ...sampleProject, title: "Updated Project" };
-      updateProject(updatedProject);
+      updateProject(updatedProject.id,updatedProject);
       state = useTodoxStore.getState();
       expect(state.projects[sampleProject.id]?.title).toBe("Updated Project");
 
@@ -110,7 +109,7 @@ describe("useTodoxStore with pre-filled data", () => {
       expect(state.todoLists[sampleTodoList.id]).toMatchObject(sampleTodoList);
 
       const updatedTodoList = { ...sampleTodoList, title: "Updated TodoList" };
-      updateTodoList(updatedTodoList);
+      updateTodoList(updatedTodoList.id,updatedTodoList);
       state = useTodoxStore.getState();
       expect(state.todoLists[sampleTodoList.id]?.title).toBe(
         "Updated TodoList",
@@ -149,7 +148,7 @@ describe("useTodoxStore with pre-filled data", () => {
       expect(toUpdate).toBeDefined();
 
       const updatedTodo = { ...toUpdate, title: "Updated Todo" };
-      updateTodo(updatedTodo);
+      updateTodo(updatedTodo.id,updatedTodo);
 
       const state = useTodoxStore.getState();
 
