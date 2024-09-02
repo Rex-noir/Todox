@@ -28,3 +28,15 @@ const useTodoxStoreBase = create<State & Action>()(
 );
 
 export const useTodoxStore = createSelectors(useTodoxStoreBase);
+
+export const selectTodosFromList = (state: State) => (todoListId: string) =>
+  state.todoLists[todoListId]?.todoIds.map((id) => state.todos[id]) || [];
+
+export const selectListFromProject = (state: State) => (projectId: string) =>
+  state.projects[projectId]?.todoListIds.map((id) => state.todoLists[id]) || [];
+
+export const selectTodosForProject = (state: State) => (projectId: string) =>
+  state.projects[projectId]?.todoListIds
+    .flatMap((listId) => state.todoLists[listId]?.todoIds || [])
+    .map((todoId) => state.todos[todoId])
+    .filter(Boolean) || [];
