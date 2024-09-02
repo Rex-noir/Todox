@@ -86,7 +86,6 @@ export const generateTodos = (
       title: faker.lorem.words(3),
       completed: faker.datatype.boolean(),
       user_id: faker.string.uuid(),
-      project_id: faker.string.uuid(),
       todoList_id: todoList_id || faker.string.uuid(),
       due_date: new Date(),
       description: faker.lorem.sentence(),
