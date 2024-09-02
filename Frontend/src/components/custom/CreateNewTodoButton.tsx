@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -19,14 +19,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import {
-  addTodo,
-  getAllProjects,
-  getListFromProject,
-} from "@/stores/todox/actions";
-import { faker } from "@faker-js/faker";
-import { useParams } from "react-router-dom";
-import { Project, TodoList } from "@/interfaces/types";
+import { useCreateTodo } from "@/services/todoService";
 
 export default function CreateNewTodo({
   listIdParam,
@@ -39,50 +32,23 @@ export default function CreateNewTodo({
   const [description, setDescription] = useState<string>("");
   const [priority, setPriority] = useState<string>("");
   const [completed, setCompleted] = useState<boolean>(false);
-  const [projectId, setProjectId] = useState<string>("");
-  const [listId, setListId] = useState(listIdParam || "");
 
-  const { projectId: routeProjectId } = useParams();
-
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [availableTodoLists, setAvailableTodoLists] = useState<TodoList[]>([]);
-
-  useEffect(() => {
-    const fetchedProjects = getAllProjects();
-    setProjects(Array.isArray(fetchedProjects) ? fetchedProjects : []);
-
-    if (routeProjectId) {
-      setProjectId(routeProjectId);
-    }
-  }, [routeProjectId]);
-
-  useEffect(() => {
-    if (projectId) {
-      const todoLists = getListFromProject(projectId);
-      setAvailableTodoLists(Array.isArray(todoLists) ? todoLists : []);
-    } else {
-      setAvailableTodoLists([]);
-    }
-  }, [projectId]);
+  const createTodoMutation = useCreateTodo();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (projectId && !listId) {
-      alert("Please select list for parent.");
-      return;
-    }
+    const formattedDueDate = dueDate
+      ? format(dueDate, "yyyy-MM-dd HH:mm:ss")
+      : null;
 
-    addTodo({
+    createTodoMutation.mutate({
       title,
       description,
-      due_date: dueDate,
+      due_date: formattedDueDate,
       priority,
       completed,
-      project_id: projectId,
-      todoList_id: listId,
-      id: faker.string.uuid(),
-      createdAt: new Date(),
+      todoList_id: listIdParam,
     });
 
     setIsOpen(false);
@@ -182,7 +148,7 @@ export default function CreateNewTodo({
               </Select>
             </div>
 
-            <div>
+            {/* <div>
               <Select
                 value={projectId}
                 onValueChange={(value) => setProjectId(value)}
@@ -198,35 +164,37 @@ export default function CreateNewTodo({
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            <div>
+            </div> */}
+            {/* <div>
               <Select
                 value={listId}
-                onValueChange={(value) => setListId(value)}
+                onValueChange={(value) =>{console.log(value)}}
               >
                 <SelectTrigger className="w-fit">
                   <SelectValue placeholder="Select parent list" />
                 </SelectTrigger>
                 <SelectContent>
-                  {projectId ? (
+                  {availableTodoLists.length > 0 ? (
                     availableTodoLists.map((list) => (
                       <SelectItem key={list.id} value={list.id}>
                         {list.title}
                       </SelectItem>
                     ))
                   ) : (
-                    <div>Select a project to see the list</div>
+                    <SelectItem value="" disabled>No lists available</SelectItem>
                   )}
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
           </div>
           <div className="flex gap-2 self-end">
             <Button onClick={handleCancel} type="button" variant={"outline"}>
               Cancel
             </Button>
-            <Button type="submit">Create</Button>
+            <Button type="submit">
+              {useCreateTodo().isIdle && "Create"}
+              {useCreateTodo().isPending && "Creating..."}
+            </Button>
           </div>
         </form>
       </CollapsibleContent>
