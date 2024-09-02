@@ -18,7 +18,7 @@ class TodolistController extends Controller
     {
         /** @var User */
         $user = Auth::user();
-        $todoLists = $user->todoLists()->get();
+        $todoLists = $user->todoLists()->with('todo')->get();
         return TodoListResource::collection($todoLists);
     }
 
@@ -31,7 +31,7 @@ class TodolistController extends Controller
         $todoList->user()->associate($request->user());
         $todoList->save();
 
-        return response(null, 201);
+        return new TodoListResource($todoList);
     }
 
     /**
@@ -39,7 +39,7 @@ class TodolistController extends Controller
      */
     public function show(string $id)
     {
-        $todoList = TodoList::findOrFail($id);
+        $todoList = TodoList::with('todo')->findOrFail($id);
         $this->authorize("view", $todoList);
         return new TodoListResource($todoList);
     }

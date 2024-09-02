@@ -18,11 +18,11 @@ class TodoListResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "description" => $this->description,
-            "todo_id" => $this->todo_id,
-            "project_id" => $this->project_id,
-            "tags" => $this->tags,
-            "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at
+            "projectId" => $this->project_id,
+            "tags" => json_decode($this->tags, true) ?? [], // Decode JSON string to array
+            "createdAt" => $this->created_at,
+            "updatedAt" => $this->updated_at,
+            "todoIds" => $this->todo->pluck('id'),
         ];
     }
 }

@@ -15,7 +15,6 @@ class TodoList extends Model
         "title",
         "project_id",
         "description",
-        "todo_id",
         "tags",
         "user_id"
     ];
@@ -25,12 +24,12 @@ class TodoList extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function Projects(): BelongsTo
+    public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
-    public function Tasks(): HasMany
+    public function todo(): HasMany
     {
         return $this->hasMany(Todo::class);
     }
