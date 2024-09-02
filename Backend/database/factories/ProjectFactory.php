@@ -21,7 +21,7 @@ class ProjectFactory extends Factory
         $user = User::factory()->create();
         return [
             //
-            'title' => $this->faker->title(),
+            'title' => $this->faker->name(),
             'description' => $this->faker->sentence(3),
             'status' => $this->faker->randomElement(array_column(ProjectStatus::cases(), 'value')),
             'iconColor' => $this->faker->hexColor(),
