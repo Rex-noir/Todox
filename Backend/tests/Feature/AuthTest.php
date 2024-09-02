@@ -96,6 +96,5 @@ test("can get user detail", function () {
 
     $response = getJson(uri: "/api/user");
 
-    dd($response);
     $response->assertOk();
 });
