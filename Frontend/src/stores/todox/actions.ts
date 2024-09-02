@@ -114,13 +114,17 @@ export const setTodoLists = (todoLists: TodoList[] = []) => {
 
 export const addTodo = (todo: Todo) => {
   useTodoxStore.setState((state) => {
-    state.todos[todo.id] = todo;
+    state.todos[todo.id] = {
+      ...todo,
+      due_date: todo.due_date ? new Date(todo.due_date) : undefined,
+    };
 
-    // Update the associated TodoList
-    const todoList = state.todoLists[todo.todoList_id];
-    if (todoList) {
-      todoList.todoIds.push(todo.id);
-      todoList.incompleteTodosCount += 1;
+    if (todo.todoList_id) {
+      const todoList = state.todoLists[todo.todoList_id];
+      if (todoList) {
+        todoList.todoIds.push(todo.id);
+        todoList.incompleteTodosCount += 1;
+      }
     }
   });
 };
@@ -128,7 +132,7 @@ export const addTodo = (todo: Todo) => {
 export const deleteTodo = (todoId: string) => {
   useTodoxStore.setState((state) => {
     const todo = state.todos[todoId];
-    if (todo) {
+    if (todo.todoList_id) {
       const todoList = state.todoLists[todo.todoList_id];
       if (todoList) {
         todoList.todoIds = todoList.todoIds.filter((id) => id !== todoId);
