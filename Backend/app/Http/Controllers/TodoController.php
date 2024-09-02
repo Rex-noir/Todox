@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TodoRequest;
 use App\Http\Resources\TodoResource;
 use App\Models\Todo;
+use App\Models\TodoList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,9 +29,14 @@ class TodoController extends Controller
     {
         $todo = new Todo($request->validated());
         $todo->user()->associate(Auth::user());
+        if ($request->validated("todoList_id")) {
+            $todoList = TodoList::find($request->validated("todoList_id"));
+            $todo->todoList()->associate($todoList);
+        }
+
         $todo->save();
 
-        return response(null, 201);
+        return new TodoResource($todo);
     }
 
     /**
