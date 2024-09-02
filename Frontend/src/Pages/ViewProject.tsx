@@ -43,8 +43,8 @@ export function ViewProject() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      key={projectId} // Add a key to force re-render on project change
-      className="h-full w-full rounded-xl px-2"
+      key={projectId}
+      className="w-full max-w-xl" // Add max-w-3xl or adjust as needed
     >
       {isEmpty ? (
         <motion.p
@@ -55,16 +55,16 @@ export function ViewProject() {
           Wow so empty.
         </motion.p>
       ) : (
-        <motion.div layout className="h-full space-y-2">
-          <div className="flex w-full flex-col items-start gap-1 border-b pb-2">
-            <h1
-              className={`px-2 text-2xl font-semibold transition-opacity duration-300 ease-in-out`}
-            >
-              {getTitle()}
-            </h1>
-            <CreateNewTodoList />
-          </div>
+        <motion.div layout className="mx-auto h-full w-full space-y-2">
           <AnimatePresence>
+            <div className="flex w-full flex-col gap-1 border-b pb-2">
+              <h1
+                className={`px-2 text-xl font-semibold transition-opacity duration-300 ease-in-out`}
+              >
+                {getTitle()}
+              </h1>
+              <CreateNewTodoList />
+            </div>
             {todoLists.map((list, index) => (
               <motion.div
                 key={list.id}
