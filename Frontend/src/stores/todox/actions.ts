@@ -14,21 +14,38 @@ export const deleteProject = (projectId: string) => {
   });
 };
 
-export const updateProject = (project: Project) => {
+export const updateProject = (id: string, project: Partial<Project>) => {
   useTodoxStore.setState((state) => {
-    state.projects[project.id] = project;
+    // Ensure the project exists before updating
+    if (state.projects[id]) {
+      // Merge existing project data with the new partial data
+      state.projects[id] = { ...state.projects[id], ...project };
+    }
   });
 };
 
-export const setProjects = (projects: Project[]) => {
+export const setProjects = (projects: Project[] = []) => {
   useTodoxStore.setState((state) => {
-    state.projects = projects.reduce(
-      (acc, project) => ({
-        ...acc,
-        [project.id]: project,
-      }),
-      {},
-    );
+    if (Array.isArray(projects) && projects.length === 0) {
+      console.warn("No projects available to set.");
+      state.projects = {};
+    } else {
+      state.projects = projects.reduce(
+        (acc, project) => ({
+          ...acc,
+          [project.id]: {
+            ...project,
+            createdAt: project.createdAt
+              ? new Date(project.createdAt)
+              : undefined,
+            updatedAt: project.updatedAt
+              ? new Date(project.updatedAt)
+              : undefined,
+          },
+        }),
+        {},
+      );
+    }
   });
 };
 
@@ -65,18 +82,30 @@ export const deleteTodoList = (todoListId: string) => {
   });
 };
 
-export const updateTodoList = (todoList: TodoList) => {
+export const updateTodoList = (id: string, todoList: Partial<TodoList>) => {
+  // Get the current state of the todo list
+  const oldTodoList = useTodoxStore.getState().todoLists[id];
+
   useTodoxStore.setState((state) => {
-    state.todoLists[todoList.id] = todoList;
+    if (state.todoLists[id]) {
+      state.todoLists[id] = {
+        ...oldTodoList, // Spread the existing properties
+        ...todoList, // Override with any new properties from the updated todoList
+      };
+    }
   });
 };
 
-export const setTodoLists = (todoLists: TodoList[]) => {
+export const setTodoLists = (todoLists: TodoList[] = []) => {
   useTodoxStore.setState((state) => {
     state.todoLists = todoLists.reduce(
       (acc, todoList) => ({
         ...acc,
-        [todoList.id]: todoList,
+        [todoList.id]: {
+          ...todoList,
+          createdAt: new Date(todoList.createdAt),
+          updatedAt: new Date(todoList.updatedAt),
+        },
       }),
       {},
     );
@@ -114,14 +143,17 @@ export const deleteTodo = (todoId: string) => {
   });
 };
 
-export const updateTodo = (todo: Todo) => {
+export const updateTodo = (id: string, todo: Partial<Todo>) => {
   useTodoxStore.setState((state) => {
-    const oldTodo = state.todos[todo.id];
+    const oldTodo = state.todos[id];
     if (oldTodo) {
-      state.todos[todo.id] = todo;
+      state.todos[id] = { ...oldTodo, ...todo };
 
-      // Update the associated TodoList if completion status changed
-      if (oldTodo.completed !== todo.completed) {
+      // Ensure todo.todoList_id exists and is a valid type
+      if (
+        oldTodo.completed !== todo.completed &&
+        todo.todoList_id !== undefined
+      ) {
         const todoList = state.todoLists[todo.todoList_id];
         if (todoList) {
           if (todo.completed) {
@@ -137,29 +169,24 @@ export const updateTodo = (todo: Todo) => {
   });
 };
 
-export const setTodos = (todos: Todo[]) => {
+export const setTodos = (todos: Todo[] = []) => {
   useTodoxStore.setState((state) => {
     state.todos = todos.reduce(
       (acc, todo) => ({
         ...acc,
-        [todo.id]: todo,
+        [todo.id]: {
+          ...todo,
+          createdAt: todo.createdAt ? new Date(todo.createdAt) : undefined,
+          updatedAt: todo.updatedAt ? new Date(todo.updatedAt) : undefined,
+          completedAt: todo.completedAt
+            ? new Date(todo.completedAt)
+            : undefined,
+          due_date: todo.due_date ? new Date(todo.due_date) : undefined,
+        },
       }),
       {},
     );
-
-    // Update all TodoLists with the new todos
-    Object.values(state.todoLists).forEach((todoList) => {
-      const todoListTodos = todos.filter(
-        (todo) => todo.todoList_id === todoList.id,
-      );
-      todoList.todoIds = todoListTodos.map((todo) => todo.id);
-      todoList.completedTodosCount = todoListTodos.filter(
-        (todo) => todo.completed,
-      ).length;
-      todoList.incompleteTodosCount = todoListTodos.filter(
-        (todo) => !todo.completed,
-      ).length;
-    });
+    return state;
   });
 };
 
