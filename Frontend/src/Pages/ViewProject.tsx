@@ -9,13 +9,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Todo, TodoList } from "@/interfaces/types";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import { getTodosForProject, updateTodo } from "@/stores/todox/actions";
 import {
-  getListFromProject,
-  getTodosForProject,
-  getTodosFromList,
-  updateTodo,
-} from "@/stores/todox/actions";
-import { useTodoxStore } from "@/stores/todox/todoxStore";
+  selectListFromProject,
+  selectTodosFromList,
+  useTodoxStore,
+} from "@/stores/todox/todoxStore";
 import { format } from "date-fns";
 import { LuCalendar } from "react-icons/lu";
 import { useParams } from "react-router-dom";
@@ -23,11 +22,12 @@ import { Badge } from "@/components/ui/badge";
 import { CreateNewTodoList } from "@/components/custom/CreateNewTodolistButton";
 import sortTodos from "@/lib/sortTodos";
 import DeleteTodoButton from "@/components/custom/DeleteTodoButton";
+import { useMemo } from "react";
 
 export function ViewProject() {
   const { projectId } = useParams();
 
-  const todoLists = getListFromProject(projectId);
+  const todoLists = useTodoxStore(selectListFromProject)(projectId ?? "");
 
   const isEmpty = getTodosForProject(projectId).length === 0;
 
@@ -85,9 +85,7 @@ export function ViewProject() {
                       <motion.div layout className="ml-5 space-y-2">
                         <CreateNewTodo listIdParam={list.id} />
                         <AnimatePresence>
-                          {sortTodos(getTodosFromList(list.id)).map((todo) => (
-                            <TodoItem key={todo.id} todo={todo} />
-                          ))}
+                          <TodoLists listId={list.id} />
                         </AnimatePresence>
                       </motion.div>
                     </AccordionContent>
@@ -99,6 +97,18 @@ export function ViewProject() {
         </motion.div>
       )}
     </motion.div>
+  );
+}
+
+function TodoLists({ listId }: { listId: string }) {
+  const todos = useTodoxStore(selectTodosFromList)(listId);
+  const sortedTodos = useMemo(() => sortTodos(todos), [todos]);
+  return (
+    <>
+      {sortedTodos.map((todo) => (
+        <TodoItem key={todo.id} todo={todo} />
+      ))}
+    </>
   );
 }
 
