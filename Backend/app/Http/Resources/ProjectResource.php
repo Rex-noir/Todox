@@ -21,7 +21,8 @@ class ProjectResource extends JsonResource
             "status" => $this->status,
             "iconColor" => $this->iconColor,
             "created_at" => $this->created_at,
-            "updated_at" => $this->updated_at
+            "updated_at" => $this->updated_at,
+            "todoListIds" => $this->todoLists->pluck("id"),
         ];
     }
 }

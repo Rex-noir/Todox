@@ -18,7 +18,7 @@ class ProjectController extends Controller
     {
         /** @var User */
         $user = Auth::user();
-        $projects = $user->projects()->get();
+        $projects = $user->projects()->with('todoLists')->get();
 
         return ProjectResource::collection($projects);
     }
@@ -41,7 +41,7 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        $project = Project::findOrFail($id);
+        $project = Project::with('todoLists')->findOrFail($id);
         $this->authorize("view", $project);
         return new ProjectResource($project);
     }
