@@ -29,7 +29,6 @@ describe("API TEST", function () {
             $this->sampleTodoList = [
                 "title" => "Sample Todo List",
                 "project_id" => $this->project->id,
-                "todo_id" => $this->todo->id,
                 'tags' => json_encode(['urgent', 'low-priority']),
                 'description' => 'This is a sample description.',
                 "user_id" => $this->user->id,
@@ -41,12 +40,12 @@ describe("API TEST", function () {
             $response = postJson("/api/todolists/", $this->sampleTodoList);
             $response->assertStatus(201);
 
-            assertDatabaseHas("todo_lists", [
-                "title" => $this->sampleTodoList['title'],
-                "project_id" => $this->sampleTodoList['project_id'],
-                "todo_id" => $this->sampleTodoList['todo_id'],
-                "user_id" => $this->sampleTodoList['user_id'],
-                "description" => $this->sampleTodoList['description'],
+            $response->assertJson([
+                'data' => [
+                    "title" => $this->sampleTodoList['title'],
+                    "projectId" => $this->sampleTodoList['project_id'],
+                    "description" => $this->sampleTodoList['description'],
+                ]
             ]);
         });
 
@@ -87,7 +86,7 @@ describe("API TEST", function () {
             $this->sampleTodoList = [
                 "title" => "Sample Todo List",
                 "project_id" => $this->project->id,
-                "todo_id" => $this->todo->id,
+                "todoIds" => $this->todo->id,
                 'tags' => json_encode(['urgent', 'low-priority']),
                 'description' => 'This is a sample description.',
                 "user_id" => $this->user->id,
@@ -105,8 +104,8 @@ describe("API TEST", function () {
                         "id",
                         "title",
                         "description",
-                        "todo_id",
-                        "project_id",
+                        "todoIds",
+                        "projectId",
                         "tags",
                     ]
                 ]
@@ -130,8 +129,8 @@ describe("API TEST", function () {
                     "id",
                     "title",
                     "description",
-                    "todo_id",
-                    "project_id",
+                    "todoIds",
+                    "projectId",
                     "tags",
                 ],
             ]);
