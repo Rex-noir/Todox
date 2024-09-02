@@ -48,7 +48,7 @@ function ProjectItem({ id, title, status, iconColor }: Project) {
         />
       </div>
 
-      <div className="grid w-full grid-cols-[120px,auto] gap-4">
+      <div className="grid w-full items-center truncate grid-cols-[120px,auto] gap-4">
         <span className="overflow-hidden text-ellipsis whitespace-nowrap text-left">
           {title}
         </span>
