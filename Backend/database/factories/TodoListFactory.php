@@ -20,9 +20,8 @@ class TodoListFactory extends Factory
     public function definition(): array
     {
         return [
-            "title" => $this->faker->title(),
+            "title" => $this->faker->sentence(),
             "project_id" => Project::factory(),
-            "todo_id" => Todo::factory(),
             'tags' => json_encode($this->faker->randomElements(['urgent', 'low-priority', 'feature', 'bug'], rand(1, 3))),  // JSON encode the array
             'description' => $this->faker->paragraph(),
             "user_id" => User::factory(),
