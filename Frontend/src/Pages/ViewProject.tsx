@@ -22,6 +22,7 @@ import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { CreateNewTodoList } from "@/components/custom/CreateNewTodolistButton";
 import sortTodos from "@/lib/sortTodos";
+import DeleteTodoButton from "@/components/custom/DeleteTodoButton";
 
 export function ViewProject() {
   const { projectId } = useParams();
@@ -29,8 +30,6 @@ export function ViewProject() {
   const todoLists = getListFromProject(projectId);
 
   const isEmpty = getTodosForProject(projectId).length === 0;
-
-  const allListId = Object.keys(useTodoxStore().todoLists).map((id) => id);
 
   const getTitle = () => {
     if (projectId) {
@@ -75,7 +74,7 @@ export function ViewProject() {
               >
                 <Accordion
                   type="multiple"
-                  defaultValue={allListId}
+                  defaultValue={todoLists.map((list) => list.id)}
                   className="w-full px-2"
                 >
                   <AccordionItem value={list.id}>
@@ -133,7 +132,7 @@ export function TodoItem({ todo }: { todo: Todo }) {
           <Checkbox
             checked={todo.completed}
             onCheckedChange={(value) =>
-              updateTodo({
+              updateTodo(todo.id, {
                 ...todo,
                 completed: !!value,
                 completedAt: value ? new Date() : undefined,
@@ -166,8 +165,9 @@ export function TodoItem({ todo }: { todo: Todo }) {
             >
               <LuCalendar className="text-gray-400" />
               <span>
-                {todo.due_date ? format(todo.due_date, "PPP") : "Not set"}
+                {todo.due_date ? format(todo.due_date, "PP") : "Not set"}
               </span>
+              <DeleteTodoButton todoId={todo.id} />
             </motion.div>
           </div>
         </div>
