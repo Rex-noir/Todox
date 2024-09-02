@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -34,5 +35,16 @@ class TodoFactory extends Factory
         return $this->state([
             'user_id' => $user->id
         ]);
+    }
+
+    public function dueToday(): Factory
+    {
+        return $this->state(
+            function (array $attributes) {
+                return [
+                    'due_date' => Carbon::today()->format('Y-m-d'),
+                ];
+            }
+        );
     }
 }
