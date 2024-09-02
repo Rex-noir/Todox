@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->boolean('completed')->default(false);
             $table->date('due_date')->nullable();
-            $table->integer('priority')->default(0);
+            $table->integer('priority')->default(0)->nullable();
             $table->timestamps();
         });
     }
