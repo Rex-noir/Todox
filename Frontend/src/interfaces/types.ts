@@ -46,9 +46,8 @@ export interface Todo {
   completed: boolean;
   completedAt?: Date;
   user_id?: string;
-  project_id: string;
-  todoList_id: string;
-  due_date?: Date;
+  todoList_id?: string;
+  due_date?: Date|string|null;
   description?: string;
   createdAt?: Date;
   updatedAt?: Date;
