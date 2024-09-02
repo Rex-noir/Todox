@@ -38,6 +38,7 @@ class TodoRequest extends FormRequest
                 'completed' => 'nullable|boolean',
                 'due_date' => 'nullable|date',
                 'priority' => 'nullable|integer|min:0|max:10',
+                'todoList_id' => 'nullable|integer|exists:todo_lists,id'
             ]
         };
     }
@@ -59,6 +60,7 @@ class TodoRequest extends FormRequest
             'priority.integer' => 'The priority must be an integer.',
             'priority.min' => 'The priority must be at least 0.',
             'priority.max' => 'The priority may not be greater than 10.',
+            'todo_list_id.exists' => 'The selected todo list does not exist.',
         ];
     }
 }
