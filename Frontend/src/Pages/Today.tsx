@@ -3,11 +3,16 @@ import { TodoItem } from "./ViewProject";
 import sortTodos from "@/lib/sortTodos";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import CreateNewTodo from "@/components/custom/CreateNewTodoButton";
+import { isToday } from "date-fns";
 
 export function TodayPage() {
   const todos = useTodoxStore((state) => state.todos);
 
-  const sortedTodos = sortTodos(Object.values(todos));
+  const todayTodos = Object.values(todos).filter(
+    (todo) => todo.due_date && isToday(new Date(todo.due_date)),
+  );
+
+  const sortedTodos = sortTodos(todayTodos);
   const completed = sortedTodos.filter((todo) => todo.completed);
 
   return (
