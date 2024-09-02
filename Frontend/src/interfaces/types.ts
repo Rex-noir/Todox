@@ -54,3 +54,18 @@ export interface Todo {
   updatedAt?: Date;
   priority: string;
 }
+
+export interface ApiResponse<T> {
+  data: T;
+  message?: string;
+  errors?: Record<string, string[]>;
+  meta?: {
+    current_page: number;
+    from: number;
+    last_page: number;
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+  };
+}
