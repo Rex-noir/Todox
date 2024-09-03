@@ -6,6 +6,7 @@ import {
   updateTodoList,
 } from "@/stores/todox/actions";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
 
 export const todoListServices = {
   delete: (id: string) => api.delete(`/todolists/${id}`),
@@ -13,7 +14,7 @@ export const todoListServices = {
   getById: (id: string): Promise<TodoList> => api.get(`/todolists/${id}`),
   update: (id: string, todoList: Partial<TodoList>) =>
     api.put(`/todolists/${id}`, todoList),
-  create: (todoList: Partial<TodoList>): Promise<TodoList> =>
+  create: (todoList: Partial<TodoList>): Promise<AxiosResponse<AxiosResponse<TodoList>>> =>
     api.post("/todolists", todoList),
 };
 
@@ -50,11 +51,12 @@ export const useUpdateTodoList = (id: string, todoList: Partial<TodoList>) => {
   });
 };
 
-export const useCreateTodoList = (todoList: Partial<TodoList>) => {
+export const useCreateTodoList = () => {
   return useMutation({
-    mutationFn: () => todoListServices.create(todoList),
+    mutationFn: (todoList: Partial<TodoList>) =>
+      todoListServices.create(todoList),
     onSuccess: (data) => {
-      addTodoList(data);
+      addTodoList(data.data.data);
     },
   });
 };
