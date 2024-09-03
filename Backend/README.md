@@ -1,66 +1,181 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Todox API Application Documentation
+![Todox Logo](/images/icon.svg)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Table of Contents
 
-## About Laravel
+1. [Introduction](#introduction)
+2. [Form Requests](#form-requests)
+3. [Routes](#routes)
+4. [Controllers](#controllers)
+5. [API Endpoints](#api-endpoints)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. Introduction
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This documentation covers the application's structure, form requests, routes, controllers, and API endpoints.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 2. Form Requests
 
-## Learning Laravel
+### LoginRequest
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   **File**: `App\Http\Requests\LoginRequest`
+-   **Purpose**: Validates user login data
+-   **Rules**:
+    -   `email`: Required, valid email format, max 255 characters
+    -   `password`: Required, string, minimum 8 characters
+    -   `remember`: Optional, boolean
+-   **Custom Messages**: Provides user-friendly error messages for validation failures
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### RegisterRequest
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **File**: `App\Http\Requests\RegisterRequest`
+-   **Purpose**: Validates user registration data
+-   **Rules**:
+    -   `name`: Required, string, max 255 characters
+    -   `email`: Required, valid email format, max 255 characters, unique in users table
+    -   `password`: Required, string, minimum 8 characters, must be confirmed
+-   **Custom Messages**: Provides user-friendly error messages for validation failures
 
-## Laravel Sponsors
+### ProjectRequest
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   **File**: `App\Http\Requests\ProjectRequest`
+-   **Purpose**: Validates project creation and update data
+-   **Authorization**: Checks user permissions for create, update, and delete actions
+-   **Rules**:
+    -   `title`: Required, string, max 255 characters
+    -   `description`: Optional, string
+    -   `status`: Optional, string, must be a valid ProjectStatus enum value
+    -   `iconColor`: Optional, string, max 7 characters
+-   **Custom Messages**: Provides user-friendly error messages for validation failures
 
-### Premium Partners
+### TodoListRequest
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+-   **File**: `App\Http\Requests\TodoListRequest`
+-   **Purpose**: Validates todo list creation and update data
+-   **Authorization**: Checks user permissions for create, update, and delete actions
+-   **Rules**:
+    -   `title`: Required, string, max 255 characters
+    -   `description`: Optional, string
+    -   `project_id`: Required, must exist in projects table
+    -   `todo_id`: Optional, must exist in todos table
+    -   `tags`: Optional, must be valid JSON
+-   **Custom Messages**: Provides user-friendly error messages for validation failures
 
-## Contributing
+### TodoRequest
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   **File**: `App\Http\Requests\TodoRequest`
+-   **Purpose**: Validates todo item creation and update data
+-   **Authorization**: Checks user permissions for create, update, and delete actions
+-   **Rules**:
+    -   `title`: Required, string, max 255 characters
+    -   `description`: Optional, string
+    -   `completed`: Optional, boolean
+    -   `due_date`: Optional, valid date
+    -   `priority`: Optional, integer between 0 and 10
+    -   `todoList_id`: Optional, must exist in todo_lists table
+-   **Custom Messages**: Provides user-friendly error messages for validation failures
 
-## Code of Conduct
+## 3. Routes
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The application defines the following routes:
 
-## Security Vulnerabilities
+### Authentication Routes
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```php
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+    Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+    Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+})->middleware(['web']);
+```
 
-## License
+### API Routes
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+All API routes are protected by the `auth:sanctum` middleware.
+
+```php
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('todos', TodoController::class);
+    Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('todolists', TodolistController::class);
+});
+```
+
+## 4. Controllers
+
+### AuthController
+
+Handles user authentication operations.
+
+-   **Methods**:
+    -   `login(LoginRequest $request)`: Authenticates a user
+    -   `register(RegisterRequest $request)`: Registers a new user
+    -   `logout(Request $request)`: Logs out the authenticated user
+
+### ProjectController
+
+Manages CRUD operations for projects.
+
+-   **Methods**:
+    -   `index()`: Lists all projects for the authenticated user
+    -   `store(ProjectRequest $request)`: Creates a new project
+    -   `show(string $id)`: Displays a specific project
+    -   `update(ProjectRequest $request, string $id)`: Updates a specific project
+    -   `destroy(ProjectRequest $request, string $id)`: Deletes a specific project
+
+### TodolistController
+
+Manages CRUD operations for todo lists.
+
+-   **Methods**:
+    -   `index()`: Lists all todo lists for the authenticated user
+    -   `store(TodoListRequest $request)`: Creates a new todo list
+    -   `show(string $id)`: Displays a specific todo list
+    -   `update(TodoListRequest $request, string $id)`: Updates a specific todo list
+    -   `destroy(TodoListRequest $request, string $id)`: Deletes a specific todo list
+
+### TodoController
+
+Manages CRUD operations for todo items.
+
+-   **Methods**:
+    -   `index()`: Lists all todos for the authenticated user
+    -   `store(TodoRequest $request)`: Creates a new todo item
+    -   `show(string $id)`: Displays a specific todo item (not implemented)
+    -   `update(TodoRequest $request, string $id)`: Updates a specific todo item
+    -   `destroy(TodoRequest $request, string $id)`: Deletes a specific todo item
+
+## 5. API Endpoints
+
+### Authentication
+
+-   `POST /auth/login`: Log in a user
+-   `POST /auth/register`: Register a new user
+-   `POST /auth/logout`: Log out the authenticated user
+
+### Projects
+
+-   `GET /projects`: List all projects
+-   `POST /projects`: Create a new project
+-   `GET /projects/{id}`: Get a specific project
+-   `PUT/PATCH /projects/{id}`: Update a specific project
+-   `DELETE /projects/{id}`: Delete a specific project
+
+### Todo Lists
+
+-   `GET /todolists`: List all todo lists
+-   `POST /todolists`: Create a new todo list
+-   `GET /todolists/{id}`: Get a specific todo list
+-   `PUT/PATCH /todolists/{id}`: Update a specific todo list
+-   `DELETE /todolists/{id}`: Delete a specific todo list
+
+### Todos
+
+-   `GET /todos`: List all todos
+-   `POST /todos`: Create a new todo
+-   `GET /todos/{id}`: Get a specific todo (not implemented)
+-   `PUT/PATCH /todos/{id}`: Update a specific todo
+-   `DELETE /todos/{id}`: Delete a specific todo
+
+Note: All API endpoints (except authentication endpoints) require authentication using Laravel Sanctum.
+
+Note: Don't forget to set up your database connection in the `.env` file and run the necessary migrations and seeders.
