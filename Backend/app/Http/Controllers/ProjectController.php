@@ -33,7 +33,7 @@ class ProjectController extends Controller
         $project->user()->associate($request->user());
         $project->save();
 
-        return response(null, 201);
+        return new ProjectResource($project);
     }
 
     /**
