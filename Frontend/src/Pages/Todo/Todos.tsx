@@ -17,11 +17,16 @@ import Splash from "../Splash";
 import LargeScreenMenu from "./LargeScreenMenu";
 import MenuToggleButton from "@/components/MenuToggleButton";
 import LogoutButton from "@/components/custom/LogoutButton";
-import { ApiResponse, Project, Todo, TodoList, User } from "@/interfaces/types";
+import { User } from "@/interfaces/types";
 import { setProjects, setTodoLists, setTodos } from "@/stores/todox/actions";
-import { setUser } from "@/stores/auth/actions";
+import { login } from "@/stores/auth/actions";
 import { AxiosResponse } from "axios";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import { useGetAllProjects } from "@/services/projectService";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { useGetAllTodoList } from "@/services/todoListService";
+import { useGetAllTodo } from "@/services/todoService";
+import Loading from "../Loading";
 
 const SideMenu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
   isOpen,
@@ -36,7 +41,11 @@ const SideMenu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="fixed left-0 top-0 z-50 flex h-full w-80 flex-col bg-white md:w-[20rem]"
       >
-        <Button onClick={toggleMenu} className="self-end" variant="ghost">
+        <Button
+          onClick={toggleMenu}
+          className="fixed top-2 mr-4 self-end"
+          variant="ghost"
+        >
           <LuPanelLeft size={24} />
         </Button>
         <LargeScreenMenu />
@@ -79,7 +88,7 @@ const Header: React.FC<{
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: isScrolled ? 0 : 50, opacity: isScrolled ? 1 : 0 }}
         transition={{ duration: 0.3 }}
-        className="truncate text-ellipsis text-xl font-bold md:mx-auto"
+        className="truncate text-ellipsis text-xl font-bold text-gray-600 md:mx-auto"
       >
         {getTitle()}
       </motion.h1>
@@ -89,16 +98,19 @@ const Header: React.FC<{
 };
 
 const ResponsiveLayout: React.FC = () => {
-  const { values } = useLoaderData() as {
-    values: Promise<
-      [
-        AxiosResponse<ApiResponse<User>>,
-        AxiosResponse<ApiResponse<Project[]>>,
-        AxiosResponse<ApiResponse<TodoList[]>>,
-        AxiosResponse<ApiResponse<Todo[]>>,
-      ]
-    >;
+  const { user } = useLoaderData() as {
+    user: Promise<AxiosResponse<User>>;
   };
+
+  const { data: ProjectData, isPending: projectPending } = useGetAllProjects(
+    useAuthStore().isAuthenticated,
+  );
+  const { data: TodoListData, isPending: todoListPending } = useGetAllTodoList(
+    useAuthStore().isAuthenticated,
+  );
+  const { data: TodoData, isPending: todosPending } = useGetAllTodo(
+    useAuthStore().isAuthenticated,
+  );
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -119,20 +131,21 @@ const ResponsiveLayout: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    values.then((v) => {
-      const [user, projects, todoLists, todos] = v;
-      setProjects(projects.data.data);
-      setTodoLists(todoLists.data.data);
-      setTodos(todos.data.data);
-      setUser(user.data.data);
-    });
-  },[values]);
+    user
+      .then((value) => {
+        login(value.data);
+        setProjects(ProjectData);
+        setTodoLists(TodoListData);
+        setTodos(TodoData);
+      })
+      .catch(() => console.warn("User not authenticated"));
+  }, [user, ProjectData, TodoData, TodoListData]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <Suspense fallback={<Splash />}>
-      <Await resolve={values} errorElement={<Navigate to="/auth/login" />}>
+      <Await resolve={user} errorElement={<Navigate to="/auth/login" />}>
         {() => {
           return (
             <div className="flex min-h-screen">
@@ -151,7 +164,13 @@ const ResponsiveLayout: React.FC = () => {
                     },
                   )}
                 >
-                  <Outlet />
+                  {todoListPending || projectPending || todosPending ? (
+                    <>
+                      <Loading />
+                    </>
+                  ) : (
+                    <Outlet />
+                  )}
                 </main>
               </div>
             </div>
