@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -20,6 +20,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useCreateTodo } from "@/services/todoService";
+import { TbLoaderQuarter } from "react-icons/tb";
 
 export default function CreateNewTodo({
   listIdParam,
@@ -51,9 +52,14 @@ export default function CreateNewTodo({
       todoList_id: listIdParam,
     });
 
-    setIsOpen(false);
     resetForm();
   };
+
+  useEffect(() => {
+    if (createTodoMutation.isSuccess) {
+      setIsOpen(false);
+    }
+  }, [createTodoMutation.isSuccess]);
 
   const resetForm = () => {
     setTitle("");
@@ -192,8 +198,10 @@ export default function CreateNewTodo({
               Cancel
             </Button>
             <Button type="submit">
-              {useCreateTodo().isIdle && "Create"}
-              {useCreateTodo().isPending && "Creating..."}
+              {!createTodoMutation.isPending && "Create"}
+              {createTodoMutation.isPending && (
+                <TbLoaderQuarter className="animate-spin" />
+              )}
             </Button>
           </div>
         </form>
