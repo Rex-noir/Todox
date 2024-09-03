@@ -1,5 +1,3 @@
-import { Badge } from "@/components/ui/badge";
-import { STATUS_COLORS } from "@/constants";
 import { Project } from "@/interfaces/types";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
 import { TbSquareRounded } from "react-icons/tb";
@@ -28,7 +26,7 @@ export function ProjectItems({ closeSheet }: { closeSheet?: () => void }) {
   );
 }
 
-function ProjectItem({ id, title, status, iconColor }: Project) {
+function ProjectItem({ id, title, iconColor }: Project) {
   return (
     <NavLink
       to={`/app/projects/${id}`}
@@ -48,16 +46,9 @@ function ProjectItem({ id, title, status, iconColor }: Project) {
         />
       </div>
 
-      <div className="grid w-full items-center truncate grid-cols-[120px,auto] gap-4">
-        <span className="overflow-hidden text-ellipsis whitespace-nowrap text-left">
-          {title}
-        </span>
-        {status && (
-          <Badge className="w-fi mx-auto h-fit" variant={"outline"}>
-            <span className={`${STATUS_COLORS[status]}`}>{status}</span>
-          </Badge>
-        )}
-      </div>
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap text-left">
+        {title}
+      </span>
     </NavLink>
   );
 }
