@@ -20,7 +20,7 @@ import { LuCalendar } from "react-icons/lu";
 import { useParams } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { CreateNewTodoList } from "@/components/custom/CreateNewTodolistButton";
-import sortTodos from "@/lib/sortTodos";
+import sortTodos, { sortTodoListsByCreatedAt } from "@/lib/sortTodos";
 import DeleteTodoButton from "@/components/custom/DeleteTodoButton";
 import { useMemo } from "react";
 
@@ -64,7 +64,7 @@ export function ViewProject() {
               </h1>
               <CreateNewTodoList />
             </div>
-            {todoLists.map((list, index) => (
+            {sortTodoListsByCreatedAt(todoLists, "desc").map((list, index) => (
               <motion.div
                 key={list.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -197,11 +197,12 @@ export function TodoListItem({ list }: { list: TodoList }) {
           <p className="text-sm text-gray-600">{list.description}</p>
         </div>
         <div className="">
-          {list.tags?.map((tag) => (
-            <Badge key={tag} className="ml-2 mr-2 mt-1">
-              {tag}
-            </Badge>
-          ))}
+          {Array.isArray(list.tags) &&
+            list.tags.map((tag) => (
+              <Badge key={tag} className="ml-2 mr-2 mt-1">
+                {tag}
+              </Badge>
+            ))}
         </div>
       </div>
     </div>
