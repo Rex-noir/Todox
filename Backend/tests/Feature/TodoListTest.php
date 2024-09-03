@@ -43,7 +43,7 @@ describe("API TEST", function () {
             $response->assertJson([
                 'data' => [
                     "title" => $this->sampleTodoList['title'],
-                    "projectId" => $this->sampleTodoList['project_id'],
+                    "project_id" => $this->sampleTodoList['project_id'],
                     "description" => $this->sampleTodoList['description'],
                 ]
             ]);
@@ -105,7 +105,7 @@ describe("API TEST", function () {
                         "title",
                         "description",
                         "todoIds",
-                        "projectId",
+                        "project_id",
                         "tags",
                     ]
                 ]
@@ -130,7 +130,7 @@ describe("API TEST", function () {
                     "title",
                     "description",
                     "todoIds",
-                    "projectId",
+                    "project_id",
                     "tags",
                 ],
             ]);
