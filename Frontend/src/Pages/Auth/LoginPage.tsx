@@ -23,7 +23,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto grid w-[350px] gap-6">
+    <form onSubmit={handleSubmit} className="mx-auto grid min-w-[300px] gap-6">
       <div className="grid gap-2 text-center">
         <h1 className="text-3xl font-bold">Authentication</h1>
         <p className="text-balance text-muted-foreground">
