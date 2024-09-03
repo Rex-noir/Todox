@@ -34,15 +34,14 @@ export function CreateNewTodoList() {
     };
 
     useTodoListMutation.mutate(newTodoList);
-
-    setTitle("");
-    setTags([]);
-    setDescription("");
   };
 
   useEffect(() => {
     if (useTodoListMutation.isSuccess) {
       setIsOpen(false);
+      setTitle("");
+      setTags([]);
+      setDescription("");
     }
   }, [useTodoListMutation.isSuccess]);
 
@@ -60,7 +59,7 @@ export function CreateNewTodoList() {
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
       <CollapsibleTrigger asChild>
         <Button
-          className="w-fit items-center gap-3 text-gray-500"
+          className="w-fit items-center gap-3 text-gray-600"
           variant={"link"}
           size={"sm"}
         >
@@ -68,7 +67,7 @@ export function CreateNewTodoList() {
           <span>Add List</span>
         </Button>
       </CollapsibleTrigger>
-      <CollapsibleContent>
+      <CollapsibleContent className="text-gray-600">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-2 rounded-md border-2 p-2"
@@ -79,7 +78,8 @@ export function CreateNewTodoList() {
               onChange={(e) => setTitle(e.target.value)}
               id="title"
               placeholder="Title"
-              className="border-none text-xl font-semibold shadow-none focus-visible:ring-0"
+              className="border-none text-xl shadow-none focus-visible:ring-0"
+              required
             />
             <Textarea
               placeholder="Description"
@@ -95,9 +95,7 @@ export function CreateNewTodoList() {
               Tags:{" "}
               <div className="mt-1 flex flex-wrap gap-1">
                 {tags.map((tag) => (
-                  <Badge variant={"outline"} key={tag}>
-                    {tag}
-                  </Badge>
+                  <Badge key={tag}>{tag}</Badge>
                 ))}
               </div>
             </div>
