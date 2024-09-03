@@ -37,7 +37,7 @@ export interface TodoList {
   completedTodosCount: number;
   incompleteTodosCount: number;
   todoIds: string[];
-  tags?: Array<"important" | "urgent" | "high-priority" | string>; // array of specified or custom tags
+  tags?: Array<"important" | "urgent" | "high-priority" | string>|string; // array of specified or custom tags
 }
 
 export interface Todo {
