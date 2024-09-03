@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Todo, TodoList } from "@/interfaces/types";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { getTodosForProject, updateTodo } from "@/stores/todox/actions";
+import { updateTodo } from "@/stores/todox/actions";
 import {
   selectListFromProject,
   selectTodosFromList,
@@ -22,14 +22,15 @@ import { Badge } from "@/components/ui/badge";
 import { CreateNewTodoList } from "@/components/custom/CreateNewTodolistButton";
 import sortTodos, { sortTodoListsByCreatedAt } from "@/lib/sortTodos";
 import DeleteTodoButton from "@/components/custom/DeleteTodoButton";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import TodoListDialog from "@/components/custom/TodoListDialog";
 
 export function ViewProject() {
   const { projectId } = useParams();
 
   const todoLists = useTodoxStore(selectListFromProject)(projectId ?? "");
 
-  const isEmpty = getTodosForProject(projectId).length === 0;
+  const isEmpty = todoLists.length === 0;
 
   const getTitle = () => {
     if (projectId) {
@@ -46,13 +47,14 @@ export function ViewProject() {
       className="w-full max-w-xl" // Add max-w-3xl or adjust as needed
     >
       {isEmpty ? (
-        <motion.p
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="italic text-gray-500"
         >
           Wow so empty.
-        </motion.p>
+          <CreateNewTodoList />
+        </motion.div>
       ) : (
         <motion.div layout className="mx-auto h-full w-full space-y-2">
           <AnimatePresence>
@@ -187,8 +189,21 @@ export function TodoItem({ todo }: { todo: Todo }) {
 }
 
 export function TodoListItem({ list }: { list: TodoList }) {
+  const [openDialog, setOpenDialog] = useState(false);
   return (
-    <div className="flex cursor-pointer gap-3 overflow-hidden rounded-md p-3 text-left transition-colors duration-200">
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        setOpenDialog(true);
+      }}
+      className="flex w-full cursor-pointer gap-3 overflow-hidden rounded-md p-3 text-left transition-colors duration-200"
+    >
+      <TodoListDialog
+        id={list.id}
+        key={list.id}
+        open={openDialog}
+        onOpenChange={() => setOpenDialog(!openDialog)}
+      />
       <div className="grid w-full items-center gap-1 sm:gap-3">
         <div className="w-fit max-w-full overflow-hidden">
           <p className="min-w-0 flex-1 truncate font-bold text-gray-900">
@@ -196,13 +211,9 @@ export function TodoListItem({ list }: { list: TodoList }) {
           </p>
           <p className="text-sm text-gray-600">{list.description}</p>
         </div>
-        <div className="">
+        <div className="flex flex-wrap gap-2">
           {Array.isArray(list.tags) &&
-            list.tags.map((tag) => (
-              <Badge key={tag} className="ml-2 mr-2 mt-1">
-                {tag}
-              </Badge>
-            ))}
+            list.tags.map((tag) => <Badge key={tag}>{tag}</Badge>)}
         </div>
       </div>
     </div>
