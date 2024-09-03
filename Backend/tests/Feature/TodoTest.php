@@ -102,12 +102,19 @@ describe("API TEST for Todos", function () {
                 'description' => 'Updated description',
                 'completed' => true,
                 'due_date' => '2023-12-31',
-                'priority' => 2,
             ];
 
             actingAs($this->user);
             $response = putJson("/api/todos/{$todo->id}", $updatedData);
-            $response->assertStatus(204);
+            $response->assertStatus(200);
+            $response->assertJson([
+                'data' => [
+                    'title' => 'Updated Todo Title',
+                    'description' => 'Updated description',
+                    'completed' => true,
+                    'due_date' => '2023-12-31',
+                ]
+            ]);
 
             assertDatabaseHas('todos', [
                 'id' => $todo->id,

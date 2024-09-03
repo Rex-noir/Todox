@@ -52,9 +52,11 @@ class TodoController extends Controller
      */
     public function update(TodoRequest $request, string $id)
     {
+        /** @var Todo */
         $todo = Todo::find($id);
         $todo->update($request->validated());
-        return response(null, 204);
+        $changes = $todo->getChanges();
+        return response()->json(['data' => $changes], 200);
     }
     /**
      * Remove the specified resource from storage.
