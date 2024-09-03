@@ -33,10 +33,6 @@ const router = createBrowserRouter([
         path: "/app/today",
         element: <TodayPage />,
       },
-      {
-        path: "/app/important",
-        element: <TodayPage />,
-      },
     ],
   },
   {

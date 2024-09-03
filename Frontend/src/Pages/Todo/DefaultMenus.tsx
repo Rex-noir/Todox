@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { IconType } from "react-icons";
-import { TbCalendar, TbStar } from "react-icons/tb";
+import { TbCalendar } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
 
 interface MenuItem {
@@ -17,12 +17,6 @@ const defaultMenus: MenuItem[] = [
     color: "text-green-500",
     icon: TbCalendar,
     url: "/app/today",
-  },
-  {
-    name: "Important",
-    color: "text-yellow-500",
-    icon: TbStar,
-    url: "/app/important",
   },
 ] as const;
 
