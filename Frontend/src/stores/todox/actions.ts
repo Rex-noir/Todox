@@ -10,6 +10,28 @@ export const addProject = (project: Project) => {
 
 export const deleteProject = (projectId: string) => {
   useTodoxStore.setState((state) => {
+    // Find the project to be deleted
+    const project = state.projects[projectId];
+    if (!project) return; // If the project doesn't exist, exit early
+
+    // Get the TodoList IDs associated with the project
+    const todoListIds = project.todoListIds;
+
+    // Delete all Todos that belong to the TodoLists of this project
+    todoListIds.forEach((todoListId) => {
+      const todoList = state.todoLists[todoListId];
+      if (todoList) {
+        // Delete all todos associated with the todoList
+        todoList.todoIds.forEach((todoId) => {
+          delete state.todos[todoId];
+        });
+
+        // Delete the todoList itself
+        delete state.todoLists[todoListId];
+      }
+    });
+
+    // Finally, delete the project itself
     delete state.projects[projectId];
   });
 };
