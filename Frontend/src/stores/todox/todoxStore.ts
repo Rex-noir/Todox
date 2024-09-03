@@ -40,3 +40,6 @@ export const selectTodosForProject = (state: State) => (projectId: string) =>
     .flatMap((listId) => state.todoLists[listId]?.todoIds || [])
     .map((todoId) => state.todos[todoId])
     .filter(Boolean) || [];
+
+export const selectListFromStore = (state: State) => (listId: string) =>
+  Object.values(state.todoLists).find((list) => list.id === listId);
