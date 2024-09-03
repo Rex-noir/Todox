@@ -213,11 +213,8 @@ export function ViewProject() {
 }
 
 function TodoLists({ listId }: { listId: string }) {
-  const selectTodos = useMemo(
-    () => selectTodosFromList(useTodoxStore.getState()),
-    [],
-  );
-  const todos = useMemo(() => selectTodos(listId) || [], [selectTodos, listId]);
+
+  const todos = selectTodosFromList(useTodoxStore())(listId)
 
   const sortedTodos = useMemo(() => sortTodos(todos), [todos]);
 
