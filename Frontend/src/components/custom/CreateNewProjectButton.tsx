@@ -1,16 +1,29 @@
 import { PREDEFINED_COLORS } from "@/constants";
 import { ProjectStatus } from "@/interfaces/types";
-import { addProject } from "@/stores/todox/actions";
-import { faker } from "@faker-js/faker";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "../ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 import { ColorPicker } from "./PickColor";
+import { useCreateProject } from "@/services/projectService";
+import { TbLoader2 } from "react-icons/tb";
 
 export default function CreateNewProjectButton() {
   const [title, setTitle] = useState("");
@@ -19,25 +32,28 @@ export default function CreateNewProjectButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [iconColor, setIconColor] = useState("#000000");
 
+  const createProjectMutation = useCreateProject({
+    title,
+    description,
+    status,
+    iconColor,
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    addProject({
-      title,
-      description,
-      status,
-      id: faker.string.uuid(),
-      todoListIds: [],
-      iconColor,
-    });
-
-    setIsOpen(false);
-    setTitle("");
-    setDescription("");
-    setStatus(null);
-    setIconColor(PREDEFINED_COLORS[0].value);
+    createProjectMutation.mutate();
   };
 
+  useEffect(() => {
+    if (createProjectMutation.isSuccess) {
+      setTitle("");
+      setDescription("");
+      setStatus(null);
+      setIconColor(PREDEFINED_COLORS[0].value);
+      setIsOpen(false);
+    }
+  }, [createProjectMutation.isSuccess]);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -131,7 +147,11 @@ export default function CreateNewProjectButton() {
           </div>
           <DialogFooter>
             <Button data-testid="create-project-action" type="submit">
-              Create Project
+              {createProjectMutation.isPending ? (
+                <TbLoader2 className="animate-spin" />
+              ) : (
+                "Create"
+              )}
             </Button>
           </DialogFooter>
         </form>
