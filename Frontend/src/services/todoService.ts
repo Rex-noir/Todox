@@ -6,7 +6,7 @@ import { AxiosResponse } from "axios";
 
 export const todoServices = {
   delete: (id: string) => api.delete(`/todos/${id}`),
-  getAll: (): Promise<Todo[]> => api.get("/todos"),
+  getAll: (): Promise<AxiosResponse<ApiResponse<Todo[]>>> => api.get("/todos"),
   getById: (id: string) => api.get(`/todos/${id}`),
   update: (id: string, todo: Partial<Todo>) => api.put(`/todos/${id}`, todo),
   create: (todo: Partial<Todo>): Promise<AxiosResponse<ApiResponse<Todo>>> =>
@@ -22,11 +22,13 @@ export const useDeleteTodo = (id: string) => {
   });
 };
 
-export const useGetAllTodo = () => {
+export const useGetAllTodo = (enable: boolean) => {
   return useQuery({
     queryFn: todoServices.getAll,
     queryKey: ["todos"],
     retry: false,
+    select: (data) => data.data.data,
+    enabled: enable,
   });
 };
 

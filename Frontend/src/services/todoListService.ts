@@ -1,5 +1,5 @@
 import api from "@/api";
-import { TodoList } from "@/interfaces/types";
+import { ApiResponse, TodoList } from "@/interfaces/types";
 import {
   addTodoList,
   deleteTodoList,
@@ -10,11 +10,14 @@ import { AxiosResponse } from "axios";
 
 export const todoListServices = {
   delete: (id: string) => api.delete(`/todolists/${id}`),
-  getAll: (): Promise<TodoList[]> => api.get("/todolists"),
+  getAll: (): Promise<AxiosResponse<ApiResponse<TodoList[]>>> =>
+    api.get("/todolists"),
   getById: (id: string): Promise<TodoList> => api.get(`/todolists/${id}`),
   update: (id: string, todoList: Partial<TodoList>) =>
     api.put(`/todolists/${id}`, todoList),
-  create: (todoList: Partial<TodoList>): Promise<AxiosResponse<AxiosResponse<TodoList>>> =>
+  create: (
+    todoList: Partial<TodoList>,
+  ): Promise<AxiosResponse<AxiosResponse<TodoList>>> =>
     api.post("/todolists", todoList),
 };
 
@@ -27,11 +30,13 @@ export const useDeleteTodoList = (id: string) => {
   });
 };
 
-export const useGetAllTodoList = () => {
+export const useGetAllTodoList = (enable: boolean) => {
   return useQuery({
     queryFn: todoListServices.getAll,
     queryKey: ["todolists"],
     retry: false,
+    select: (data) => data.data.data,
+    enabled: enable,
   });
 };
 
