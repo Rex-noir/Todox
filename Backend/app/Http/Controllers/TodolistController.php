@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TodoListRequest;
 use App\Http\Resources\TodoListResource;
+use App\Models\Project;
 use App\Models\TodoList;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,6 +30,10 @@ class TodolistController extends Controller
     {
         $todoList = new TodoList($request->validated());
         $todoList->user()->associate($request->user());
+        if ($request->validated("project_id")) {
+            $project = Project::findOrFail($request->validated("project_id"));
+            $todoList->project()->associate($project);
+        }
         $todoList->save();
 
         return new TodoListResource($todoList);

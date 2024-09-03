@@ -18,7 +18,7 @@ class TodoListResource extends JsonResource
             "id" => $this->id,
             "title" => $this->title,
             "description" => $this->description,
-            "projectId" => $this->project_id,
+            "project_id" => $this->project_id,
             "tags" => json_decode($this->tags, true) ?? [], // Decode JSON string to array
             "createdAt" => $this->created_at,
             "updatedAt" => $this->updated_at,
