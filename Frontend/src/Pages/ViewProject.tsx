@@ -37,6 +37,8 @@ import {
 } from "@/components/ui/select";
 import { TbLoader3 } from "react-icons/tb";
 import { TodoListItem } from "@/components/custom/TodoListItem";
+import { useUpdateTodo } from "@/services/todoService";
+import { formatToMySQLDateTime } from "@/utils/dateFormatter";
 
 export function ViewProject() {
   const { projectId } = useParams();
@@ -213,8 +215,7 @@ export function ViewProject() {
 }
 
 function TodoLists({ listId }: { listId: string }) {
-
-  const todos = selectTodosFromList(useTodoxStore())(listId)
+  const todos = selectTodosFromList(useTodoxStore())(listId);
 
   const sortedTodos = useMemo(() => sortTodos(todos), [todos]);
 
@@ -238,6 +239,21 @@ const todoVariants = {
 };
 
 export function TodoItem({ todo }: { todo: Todo }) {
+  const updateMutation = useUpdateTodo(todo.id);
+
+  const updateCompleted = (value: boolean) => {
+    const update: Partial<Todo> = {
+      ...todo,
+      completed: !!value,
+      completedAt: value ? new Date() : undefined,
+      due_date: formatToMySQLDateTime(todo.due_date as Date),
+    };
+
+    updateTodo(todo.id, update);
+
+    updateMutation.mutate(update);
+  };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -260,13 +276,7 @@ export function TodoItem({ todo }: { todo: Todo }) {
         <div className="flex items-start gap-4">
           <Checkbox
             checked={todo.completed}
-            onCheckedChange={(value) =>
-              updateTodo(todo.id, {
-                ...todo,
-                completed: !!value,
-                completedAt: value ? new Date() : undefined,
-              })
-            }
+            onCheckedChange={updateCompleted}
             className="mt-2 size-5 rounded-full"
           />
         </div>

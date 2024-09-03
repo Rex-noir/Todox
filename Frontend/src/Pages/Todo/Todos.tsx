@@ -41,11 +41,7 @@ const SideMenu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="fixed left-0 top-0 z-50 flex h-full w-80 flex-col bg-white md:w-[20rem]"
       >
-        <Button
-          onClick={toggleMenu}
-          className="fixed top-2 mr-4 self-end"
-          variant="ghost"
-        >
+        <Button onClick={toggleMenu} className=" mt-2 mr-4 self-end" variant="ghost">
           <LuPanelLeft size={24} />
         </Button>
         <LargeScreenMenu />

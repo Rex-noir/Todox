@@ -8,7 +8,10 @@ export const todoServices = {
   delete: (id: string) => api.delete(`/todos/${id}`),
   getAll: (): Promise<AxiosResponse<ApiResponse<Todo[]>>> => api.get("/todos"),
   getById: (id: string) => api.get(`/todos/${id}`),
-  update: (id: string, todo: Partial<Todo>) => api.put(`/todos/${id}`, todo),
+  update: (
+    todo: Partial<Todo>,
+  ): Promise<AxiosResponse<ApiResponse<Partial<Todo>>>> =>
+    api.put(`/todos/${todo.id}`, todo),
   create: (todo: Partial<Todo>): Promise<AxiosResponse<ApiResponse<Todo>>> =>
     api.post("/todos", todo),
 };
@@ -40,11 +43,11 @@ export const useGetTodo = (id: string) => {
   });
 };
 
-export const useUpdateTodo = (id: string, todo: Partial<Todo>) => {
+export const useUpdateTodo = (id: string) => {
   return useMutation({
-    mutationFn: () => todoServices.update(id, todo),
-    onSuccess: () => {
-      updateTodo(id, todo);
+    mutationFn: (todo: Partial<Todo>) => todoServices.update(todo),
+    onSuccess: (data) => {
+      updateTodo(id, data.data.data);
     },
   });
 };
