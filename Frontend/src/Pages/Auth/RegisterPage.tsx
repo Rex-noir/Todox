@@ -7,9 +7,8 @@ export default function RegisterPage() {
   return (
     <div className="mx-auto grid min-w-[300px] gap-6">
       <div className="grid gap-2 text-center">
-        <h1 className="text-3xl font-bold">Register</h1>
         <p className="text-balance text-muted-foreground">
-          Fill the required fields to register.
+          Registering is not available right now!.
         </p>
       </div>
       <div className="grid gap-4">
