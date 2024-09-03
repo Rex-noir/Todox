@@ -10,7 +10,8 @@ export default function ProjectOptions({ projectId }: { projectId: string }) {
   const deleteMutation = useDeleteProject(projectId);
   const navigate = useNavigate();
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     deleteMutation.mutate(undefined, {
       onSuccess: () => {
         navigate("/app/today");
@@ -22,7 +23,11 @@ export default function ProjectOptions({ projectId }: { projectId: string }) {
     <>
       <Popover>
         <PopoverTrigger asChild>
-          <Button onClick={(e)=>e.stopPropagation()} size={"sm"} variant={"ghost"}>
+          <Button
+            onClick={(e) => e.stopPropagation()}
+            size={"sm"}
+            variant={"ghost"}
+          >
             <GoKebabHorizontal className="size-5 cursor-pointer" />
           </Button>
         </PopoverTrigger>
