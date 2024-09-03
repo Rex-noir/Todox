@@ -74,9 +74,6 @@ export const LoginPage = () => {
             "Login"
           )}
         </Button>
-        <Button variant="outline" className="w-full" type="button">
-          Login with Google
-        </Button>
       </div>
       <div className="mt-4 text-center text-sm">
         Don&apos;t have an account?{" "}
