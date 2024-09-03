@@ -27,7 +27,6 @@ export const updateProject = (id: string, project: Partial<Project>) => {
 export const setProjects = (projects: Project[] = []) => {
   useTodoxStore.setState((state) => {
     if (Array.isArray(projects) && projects.length === 0) {
-      console.warn("No projects available to set.");
       state.projects = {};
     } else {
       state.projects = projects.reduce(
@@ -142,8 +141,8 @@ export const deleteTodo = (todoId: string) => {
           todoList.incompleteTodosCount -= 1;
         }
       }
-      delete state.todos[todoId];
     }
+    delete state.todos[todoId];
   });
 };
 
@@ -242,5 +241,11 @@ export const getTodosForProject = (projectId: string | undefined) => {
 export const getTodayTodos = () => {
   return Object.values(useTodoxStore.getState().todos).filter(
     (todo) => todo.due_date && isToday(new Date(todo.due_date)),
+  );
+};
+
+export const getProject = (projectId?: string) => {
+  return Object.values(useTodoxStore.getState().projects).find(
+    (project) => project.id === projectId,
   );
 };
