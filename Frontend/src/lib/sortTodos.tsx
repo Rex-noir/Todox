@@ -1,4 +1,4 @@
-import { Todo } from "@/interfaces/types";
+import { Todo, TodoList } from "@/interfaces/types";
 
 export default function sortTodos(todos: Todo[]): Todo[] {
   return todos.sort((a, b) => {
@@ -14,12 +14,34 @@ export default function sortTodos(todos: Todo[]): Todo[] {
 
     // For uncompleted todos, sort by due date
     if (a.due_date && b.due_date) {
-      return a.due_date.getTime() - b.due_date.getTime();
+      const dateA =
+        typeof a.due_date === "string" ? new Date(a.due_date) : a.due_date;
+      const dateB =
+        typeof b.due_date === "string" ? new Date(b.due_date) : b.due_date;
+
+      return dateA.getTime() - dateB.getTime();
     }
+
     if (a.due_date) return -1;
     if (b.due_date) return 1;
 
     // If neither have due dates, sort by creation date
     return (a.createdAt?.getTime() ?? 0) - (b.createdAt?.getTime() ?? 0);
+  });
+}
+
+export function sortTodoListsByCreatedAt(
+  todoLists: TodoList[],
+  order: "asc" | "desc" = "asc",
+): TodoList[] {
+  return [...todoLists].sort((a, b) => {
+    const dateA = new Date(a.createdAt).getTime();
+    const dateB = new Date(b.createdAt).getTime();
+
+    if (order === "asc") {
+      return dateA - dateB; // Sort in ascending order
+    } else {
+      return dateB - dateA; // Sort in descending order
+    }
   });
 }
