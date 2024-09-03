@@ -1,5 +1,5 @@
 import api from "@/api";
-import { defer } from "react-router-dom";
+import { defer, redirect } from "react-router-dom";
 
 export const authRequired = () => {
   const getUser = api.get("/user");
@@ -7,4 +7,11 @@ export const authRequired = () => {
   return defer({
     user: getUser,
   });
+};
+
+export const authBlock = () => {
+  return api
+    .get("/user")
+    .then(() => redirect("/app"))
+    .catch(() => null);
 };

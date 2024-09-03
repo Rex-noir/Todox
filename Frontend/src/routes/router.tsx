@@ -5,7 +5,7 @@ import { TodayPage } from "@/Pages/Today";
 import { Auth } from "@/Pages/Auth/Auth";
 import { LoginPage } from "@/Pages/Auth/LoginPage";
 import RegisterPage from "@/Pages/Auth/RegisterPage";
-import { authRequired } from "@/utils/routeLoaders";
+import { authBlock, authRequired } from "@/utils/routeLoaders";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +37,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/auth",
+    loader:authBlock,
     element: <Auth />,
     children: [
       {
