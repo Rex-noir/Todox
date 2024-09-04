@@ -2,7 +2,7 @@
 
 # Todox
 
-## An application based todo application built using Laravel and React.
+## A project based todo application built using Laravel and React.
 
 ## Table of Contents
 
