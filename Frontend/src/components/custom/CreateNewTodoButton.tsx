@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -24,11 +24,19 @@ import { TbLoaderQuarter } from "react-icons/tb";
 
 export default function CreateNewTodo({
   listIdParam,
+  onCollapseChange,
+  isCollapsed,
+  due_date,
 }: {
   listIdParam?: string;
+  onCollapseChange?: (isCollapsed: boolean) => void;
+  isCollapsed?: boolean;
+  due_date?: Date;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [dueDate, setDueDate] = useState<Date | undefined>(new Date());
+  const [dueDate, setDueDate] = useState<Date | undefined>(
+    due_date ?? new Date(),
+  );
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [priority, setPriority] = useState<string>("");
@@ -51,13 +59,12 @@ export default function CreateNewTodo({
       completed,
       todoList_id: listIdParam,
     });
-
-    resetForm();
   };
 
   useEffect(() => {
     if (createTodoMutation.isSuccess) {
       setIsOpen(false);
+      resetForm();
     }
   }, [createTodoMutation.isSuccess]);
 
@@ -70,14 +77,28 @@ export default function CreateNewTodo({
 
   const handleCancel = () => {
     resetForm();
-    setIsOpen(false);
+    handleCollapse(false);
   };
 
+  const handleCollapse = useCallback(
+    (value: boolean) => {
+      setIsOpen(value);
+      if (onCollapseChange) {
+        onCollapseChange(value);
+      }
+    },
+    [onCollapseChange],
+  );
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
+    <Collapsible
+      open={isCollapsed ?? isOpen}
+      onOpenChange={handleCollapse}
+      className="space-y-2"
+    >
       <div className="flex items-center space-x-4">
         <CollapsibleTrigger asChild>
           <Button
+            onClick={(e) => e.stopPropagation()}
             className="w-fit items-center gap-3 text-gray-500"
             variant={"link"}
             size={"sm"}

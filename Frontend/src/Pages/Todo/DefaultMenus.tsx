@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { IconType } from "react-icons";
 import { TbCalendar } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
+import { GoCalendar } from "react-icons/go";
 
 interface MenuItem {
   name: string;
@@ -17,6 +18,12 @@ const defaultMenus: MenuItem[] = [
     color: "text-green-500",
     icon: TbCalendar,
     url: "/app/today",
+  },
+  {
+    name: "Upcoming",
+    color: "text-red-500",
+    icon: GoCalendar,
+    url: "/app/upcoming",
   },
 ] as const;
 
