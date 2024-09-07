@@ -246,7 +246,7 @@ export function TodoItem({ todo }: { todo: Todo }) {
       ...todo,
       completed: !!value,
       completedAt: value ? new Date() : undefined,
-      due_date: formatToMySQLDateTime(todo.due_date as Date),
+      due_date: formatToMySQLDateTime(todo.due_date ?? new Date()),
     };
 
     updateTodo(todo.id, update);

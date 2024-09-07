@@ -1,4 +1,11 @@
-export const formatToMySQLDateTime = (date: Date): string => {
+export const formatToMySQLDateTime = (d: Date | string): string => {
+  let date: Date;
+
+  if (d instanceof Date) {
+    date = d;
+  } else {
+    date = new Date(d);
+  }
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-based
   const day = String(date.getDate()).padStart(2, "0");
