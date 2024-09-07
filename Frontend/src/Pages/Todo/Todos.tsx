@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { cx } from "class-variance-authority";
 import { useTodoxStore } from "@/stores/todox/todoxStore";
 import Splash from "../Splash";
-import LargeScreenMenu from "./LargeScreenMenu";
+import LargeScreenMenu from "./SideMenu";
 import MenuToggleButton from "@/components/MenuToggleButton";
 import LogoutButton from "@/components/custom/LogoutButton";
 import { User } from "@/interfaces/types";
@@ -41,7 +41,11 @@ const SideMenu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="fixed left-0 top-0 z-50 flex h-full w-80 flex-col bg-white md:w-[20rem]"
       >
-        <Button onClick={toggleMenu} className=" mt-2 mr-4 self-end" variant="ghost">
+        <Button
+          onClick={toggleMenu}
+          className="mr-4 mt-2 self-end"
+          variant="ghost"
+        >
           <LuPanelLeft size={24} />
         </Button>
         <LargeScreenMenu />
@@ -154,7 +158,7 @@ const ResponsiveLayout: React.FC = () => {
                 />
                 <main
                   className={cx(
-                    "mt-14 flex min-h-screen justify-center p-4 transition-all duration-300",
+                    "scrollbar-hide mt-14 flex h-full justify-center p-4 transition-all duration-300",
                     {
                       "md:ml-[20rem]": isMenuOpen,
                     },
