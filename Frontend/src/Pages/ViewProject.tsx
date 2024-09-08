@@ -96,7 +96,7 @@ export function ViewProject() {
       <motion.div layout className="mx-auto h-full w-full space-y-2">
         <AnimatePresence>
           <div className="flex w-full cursor-text flex-col gap-1 border-b pb-2">
-            <div className="px-2 text-gray-600">
+            <div className="px-2">
               {editingProject ? (
                 <div>
                   <Input
@@ -285,23 +285,15 @@ export function TodoItem({ todo }: { todo: Todo }) {
             <motion.p
               layout
               className={`min-w-0 flex-1 truncate font-medium ${
-                todo.completed ? "text-gray-500 line-through" : "text-gray-800"
+                todo.completed ? "line-through" : ""
               }`}
             >
               {todo.title}
             </motion.p>
-            <motion.p
-              layout
-              className={`text-sm ${
-                todo.completed ? "text-gray-400" : "text-gray-600"
-              }`}
-            >
+            <motion.p layout className={`text-sm ${todo.completed ? "" : ""}`}>
               {todo.description}
             </motion.p>
-            <motion.div
-              layout
-              className="mt-1 flex items-center gap-1 text-sm text-gray-500"
-            >
+            <motion.div layout className="mt-1 flex items-center gap-1 text-sm">
               <LuCalendar className="text-gray-400" />
               <span>
                 {todo.due_date ? format(todo.due_date, "PP") : "Not set"}

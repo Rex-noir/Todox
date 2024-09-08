@@ -99,7 +99,7 @@ export default function CreateNewTodo({
         <CollapsibleTrigger asChild>
           <Button
             onClick={(e) => e.stopPropagation()}
-            className="w-fit items-center gap-3 text-gray-500"
+            className="w-fit items-center gap-3"
             variant={"link"}
             size={"sm"}
           >

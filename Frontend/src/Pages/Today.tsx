@@ -23,7 +23,7 @@ export function TodayPage() {
         <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl">
           Today
         </h1>
-        <p className="flex items-center gap-2 px-1 text-gray-600">
+        <p className="flex items-center gap-2 px-1">
           <CheckCircledIcon /> {completed.length} of {sortedTodos.length}{" "}
           completed
         </p>

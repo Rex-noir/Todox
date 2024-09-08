@@ -34,8 +34,8 @@ function ProjectItem({ id, title, iconColor }: Project) {
       className={({ isActive }) =>
         `grid w-full grid-cols-[24px,auto] items-center justify-start gap-2 rounded-md p-3 px-4 ${
           isActive
-            ? "bg-gray-100 text-gray-900"
-            : "text-gray-600 hover:bg-neutral-100"
+            ? "bg-gray-100 dark:bg-slate-800"
+            : "hover:bg-neutral-100 dark:hover:bg-slate-800"
         }`
       }
     >

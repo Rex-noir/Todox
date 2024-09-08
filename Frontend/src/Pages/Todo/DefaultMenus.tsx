@@ -54,8 +54,10 @@ const MenuItem: React.FC<MenuItem> = ({ name, color, url, icon: Icon }) => {
     <NavLink
       to={url}
       className={({ isActive }) =>
-        `flex w-full items-center justify-start rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-200 hover:bg-gray-100 ${
-          isActive ? "bg-gray-100 text-blue-600" : "text-gray-700"
+        `flex w-full items-center justify-start rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-slate-900 ${
+          isActive
+            ? "bg-gray-100 dark:bg-slate-800"
+            : "text-gray-700 dark:text-white"
         }`
       }
     >

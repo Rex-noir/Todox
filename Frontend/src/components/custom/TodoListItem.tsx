@@ -67,7 +67,7 @@ export function TodoListItem({ list }: { list: TodoList }) {
     >
       {editingMode ? (
         <>
-          <div className="flex w-full flex-col gap-3 text-gray-600">
+          <div className="flex w-full flex-col gap-3">
             <div>
               <Input
                 className="!min-h-0 resize-none border-0 p-0 text-lg shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
@@ -121,12 +121,12 @@ export function TodoListItem({ list }: { list: TodoList }) {
           >
             <div className="w-full max-w-full overflow-hidden">
               <div className="flex w-full items-center justify-between">
-                <p className="min-w-0 flex-1 truncate font-bold text-gray-600">
+                <p className="min-w-0 flex-1 truncate font-bold">
                   {list.title}
                 </p>
                 <TodoListOptions listId={list.id} />
               </div>
-              <p className="text-sm text-gray-600">{list.description}</p>
+              <p className="text-sm">{list.description}</p>
             </div>
             {tags && (
               <div className="flex flex-wrap gap-2">

@@ -59,7 +59,7 @@ export default function CreateNewProjectButton() {
       <DialogTrigger asChild>
         <Button
           data-testid="create-new-project-open-button"
-          className="w-full justify-start rounded-xl py-5 text-green-500 hover:bg-neutral-50"
+          className="w-full justify-start rounded-xl py-5 text-green-500 hover:bg-neutral-50 dark:hover:bg-slate-700"
           variant="secondary"
         >
           <PlusCircledIcon className="mr-3 size-5 font-bold" />

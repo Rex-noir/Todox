@@ -2,6 +2,7 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes/router";
 import { useEffect } from "react";
 import api from "./api";
+import { ThemeProvider } from "./components/theme-provider";
 
 function App() {
   useEffect(() => {
@@ -18,7 +19,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
+      <ThemeProvider defaultTheme="system" storageKey="todox-ui-theme">
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </>
   );
 }

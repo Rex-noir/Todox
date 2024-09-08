@@ -125,7 +125,7 @@ export default function TodoListDialog({
           <DialogTitle className="!size-0" />
           <DialogDescription className="!size-0" />
         </VisuallyHidden.Root>
-        <div className="break-all text-gray-600">
+        <div className="break-all">
           {edit ? (
             <div className="flex flex-col gap-4 rounded-md border p-2">
               <div>

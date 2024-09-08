@@ -17,9 +17,9 @@ export default function LogoutButton() {
   return (
     <div>
       <Button onClick={handleLogout} variant={"ghost"}>
-        {logOutMutation.isIdle && <LuLogOut className="size-5 text-gray-600" />}
+        {logOutMutation.isIdle && <LuLogOut className="size-5" />}
         {logOutMutation.isPending && (
-          <LuLoader2 className="size-5 animate-spin text-gray-600" />
+          <LuLoader2 className="size-5 animate-spin" />
         )}
       </Button>
     </div>

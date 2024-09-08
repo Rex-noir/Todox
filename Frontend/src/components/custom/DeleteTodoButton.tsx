@@ -8,7 +8,7 @@ export default function DeleteTodoButton({ todoId }: { todoId: string }) {
     deleteTodo.mutate();
   };
   return (
-    <Button onClick={handleDelete} className="text-gray-600" variant={"link"}>
+    <Button onClick={handleDelete} className="" variant={"link"}>
       {deleteTodo.isPending ? <TbLoader3 className="animate-spin" /> : "Delete"}
     </Button>
   );

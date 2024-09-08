@@ -27,6 +27,8 @@ import { useAuthStore } from "@/stores/auth/authStore";
 import { useGetAllTodoList } from "@/services/todoListService";
 import { useGetAllTodo } from "@/services/todoService";
 import Loading from "../Loading";
+import SideProfileAvatar from "@/components/custom/SideProfileAvatar";
+import { ToggleTheme } from "@/components/theme-toggle";
 
 const SideMenu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
   isOpen,
@@ -39,15 +41,17 @@ const SideMenu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
         animate={{ x: 0 }}
         exit={{ x: "-100%" }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="fixed left-0 top-0 z-50 flex h-full w-80 flex-col bg-white md:w-[20rem]"
+        className="fixed left-0 top-0 z-50 flex h-full w-80 flex-col bg-white dark:bg-slate-950 md:w-[20rem]"
       >
-        <Button
-          onClick={toggleMenu}
-          className="mr-4 mt-2 self-end"
-          variant="ghost"
-        >
-          <LuPanelLeft size={24} />
-        </Button>
+        <div className="mb-3 flex items-center justify-between gap-1 px-4">
+          <SideProfileAvatar />
+          <div className="mt-3">
+            <ToggleTheme />
+          </div>
+          <Button onClick={toggleMenu} className="mt-2" variant="ghost">
+            <LuPanelLeft size={24} />
+          </Button>
+        </div>
         <LargeScreenMenu />
       </motion.aside>
     )}
@@ -72,9 +76,9 @@ const Header: React.FC<{
   return (
     <header
       className={cx(
-        "fixed z-40 flex items-center justify-between p-2 transition-all duration-300",
+        "fixed z-40 flex items-center justify-between bg-white p-2 py-4 transition-all duration-300 dark:bg-slate-950",
         {
-          "bg-white shadow-sm": isScrolled,
+          "shadow-sm": isScrolled,
           "w-full": !isMenuOpen,
           "w-[calc(100%-20rem)]": isMenuOpen,
           "ml-[20rem]": isMenuOpen,
@@ -88,7 +92,7 @@ const Header: React.FC<{
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: isScrolled ? 0 : 50, opacity: isScrolled ? 1 : 0 }}
         transition={{ duration: 0.3 }}
-        className="truncate text-ellipsis text-xl font-bold text-gray-600 md:mx-auto"
+        className="truncate text-ellipsis text-xl font-bold md:mx-auto"
       >
         {getTitle()}
       </motion.h1>

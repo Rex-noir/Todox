@@ -11,13 +11,13 @@ const LayoutMenu: React.FC = () => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
-      className="h-full overflow-y-auto bg-white px-6 py-1 shadow-lg"
+      className="h-full overflow-y-auto bg-white px-6 py-1 shadow-lg dark:bg-slate-950"
     >
       <motion.h3
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1, duration: 0.3 }}
-        className="mb-8 text-3xl font-bold tracking-tight text-gray-900"
+        className="mb-8 text-3xl font-bold tracking-tight"
       >
         Private
       </motion.h3>

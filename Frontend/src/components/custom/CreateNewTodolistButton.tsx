@@ -59,7 +59,7 @@ export function CreateNewTodoList() {
     <Collapsible open={isOpen} onOpenChange={setIsOpen} className="space-y-2">
       <CollapsibleTrigger asChild>
         <Button
-          className="w-fit items-center gap-3 text-gray-600"
+          className="w-fit items-center gap-3"
           variant={"link"}
           size={"sm"}
         >
@@ -67,7 +67,7 @@ export function CreateNewTodoList() {
           <span>Add List</span>
         </Button>
       </CollapsibleTrigger>
-      <CollapsibleContent className="text-gray-600">
+      <CollapsibleContent className="">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-2 rounded-md border-2 p-2"
