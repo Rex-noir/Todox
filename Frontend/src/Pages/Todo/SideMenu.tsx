@@ -11,7 +11,7 @@ const LayoutMenu: React.FC = () => {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
-      className="h-full overflow-y-auto bg-white px-6 py-1 shadow-lg dark:bg-slate-950"
+      className="h-full overflow-y-auto bg-white px-6 py-1 shadow-lg dark:shadow-slate-800 dark:bg-slate-950"
     >
       <motion.h3
         initial={{ opacity: 0, y: -10 }}
