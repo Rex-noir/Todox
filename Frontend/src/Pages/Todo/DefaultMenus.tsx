@@ -33,7 +33,7 @@ interface DefaultMenusProps {
 
 const DefaultMenus: React.FC<DefaultMenusProps> = ({ closeSheet }) => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-1">
       {defaultMenus.map((item, index) => (
         <motion.div
           key={item.name}
@@ -54,7 +54,7 @@ const MenuItem: React.FC<MenuItem> = ({ name, color, url, icon: Icon }) => {
     <NavLink
       to={url}
       className={({ isActive }) =>
-        `flex w-full items-center justify-start rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-slate-900 ${
+        `flex w-full items-center justify-start rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-slate-900 ${
           isActive
             ? "bg-gray-100 dark:bg-slate-800"
             : "text-gray-700 dark:text-white"

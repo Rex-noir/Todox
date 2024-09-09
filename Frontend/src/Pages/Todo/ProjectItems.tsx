@@ -7,7 +7,7 @@ export function ProjectItems({ closeSheet }: { closeSheet?: () => void }) {
   const projects = useTodoxStore((state) => state.projects);
 
   return (
-    <div className="flex h-full flex-col justify-between space-y-1 overflow-y-auto">
+    <div className="flex h-full flex-col gap-2 justify-between space-y-1 overflow-y-auto">
       <h3 className="px-1">Projects</h3>
       {Object.keys(projects).length > 0 ? (
         Object.values(projects).map((project) => (
@@ -32,7 +32,7 @@ function ProjectItem({ id, title, iconColor }: Project) {
       to={`/app/projects/${id}`}
       data-testid={`project-item-${id}`}
       className={({ isActive }) =>
-        `grid w-full grid-cols-[24px,auto] items-center justify-start gap-2 rounded-md p-3 px-4 ${
+        `grid w-full grid-cols-[24px,auto] items-center justify-start gap-2 rounded-md py-2 px-4 ${
           isActive
             ? "bg-gray-100 dark:bg-slate-800"
             : "hover:bg-neutral-100 dark:hover:bg-slate-800"
