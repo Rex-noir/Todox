@@ -6,7 +6,9 @@ import { Separator } from "@/components/ui/separator";
 import { useAuthStore } from "@/stores/auth/authStore";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { CameraIcon, LockOpen1Icon } from "@radix-ui/react-icons";
+import { CameraIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { useUpdateUserMutation } from "@/services/userService";
+import { cn } from "@/lib/utils";
 
 export default function AccountView() {
   const user = useAuthStore((state) => state.user);
@@ -17,6 +19,8 @@ export default function AccountView() {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [isModified, setIsModified] = useState(false);
+
+  const updateUserMutation = useUpdateUserMutation();
 
   useEffect(() => {
     const isDataModified =
@@ -29,8 +33,16 @@ export default function AccountView() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form submitted");
+    updateUserMutation.mutate({
+      id: user?.id,
+      name: username,
+      email: email,
+      current_password: currentPassword,
+      password: newPassword.length > 0 ? newPassword : undefined,
+      password_confirmation: newPasswordConfirm.length
+        ? newPasswordConfirm
+        : undefined,
+    });
   };
 
   const resetForms = () => {
@@ -55,7 +67,12 @@ export default function AccountView() {
                 {user?.name[0]}
               </AvatarFallback>
             </Avatar>
-            <Button variant="outline" size="sm" className="flex items-center">
+            <Button
+              variant="outline"
+              type="button"
+              size="sm"
+              className="flex items-center"
+            >
               <CameraIcon className="mr-2 h-4 w-4" />
               Change Photo
             </Button>
@@ -152,8 +169,17 @@ export default function AccountView() {
               >
                 Cancel
               </Button>
-              <Button disabled={!currentPassword} type="submit" size="sm" className="flex items-center">
-                <LockOpen1Icon className="mr-2 h-4 w-4" />
+              <Button
+                disabled={!currentPassword || updateUserMutation.isPending}
+                type="submit"
+                size="sm"
+                className={cn("flex items-center")}
+              >
+                <UpdateIcon
+                  className={cn("mr-2 h-4 w-4", {
+                    "animate-spin": updateUserMutation.isPending,
+                  })}
+                />
                 Update Account
               </Button>
             </div>
