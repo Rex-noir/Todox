@@ -21,7 +21,7 @@ export default function SideProfileAvatar() {
             <ChevronDownIcon />
           </div>
         </PopoverTrigger>
-        <PopoverContent className="ml-2 w-[250px] p-2">
+        <PopoverContent className="ml-2 w-[200px] p-2">
           <div className="flex flex-col gap-2">
             <Settings />
           </div>
