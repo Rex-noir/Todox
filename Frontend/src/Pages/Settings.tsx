@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { LuSettings2, LuUser2, LuPanelLeft } from "react-icons/lu";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import AccountView from "@/components/custom/settings/AccountSetting";
 import {
   Dialog,
@@ -15,10 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Cross1Icon } from "@radix-ui/react-icons";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useState } from "react";
-import { LuPanelLeft, LuSettings2, LuUser2 } from "react-icons/lu";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 
 interface MenuItem {
   title: string;
@@ -38,8 +39,8 @@ const items: MenuItem[] = [
 
 export default function Settings() {
   const [currentView, setCurrentView] = useState<string>(items[0].id);
-
   const [open, setOpen] = useState(false);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const renderView = () => {
     const item = items.find((item) => item.id === currentView);
@@ -64,39 +65,41 @@ export default function Settings() {
           </VisuallyHidden>
 
           {/* Mobile Layout (Slide Navigation) */}
-          <div className="block md:hidden">
-            <div className="flex items-center justify-between border-b bg-gray-100 p-2 px-3">
-              <div className="flex h-fit items-center gap-px">
-                <div className="flex items-center">
-                  <SlideNav
-                    currentView={currentView}
-                    setCurrentView={setCurrentView}
-                  />
+          {!isDesktop && (
+            <div className="block">
+              <div className="flex items-center justify-between border-b bg-gray-100 p-2 px-3">
+                <div className="flex h-fit items-center gap-px">
+                  <div className="flex items-center">
+                    <SlideNav
+                      currentView={currentView}
+                      setCurrentView={setCurrentView}
+                    />
+                  </div>
+                  <div className="p-2">{currentView.toUpperCase()}</div>
                 </div>
-                <div className="p-2">{currentView.toUpperCase()}</div>
+                <div>
+                  <Cross1Icon onClick={() => setOpen(false)} />
+                </div>
               </div>
-              <div>
-                <Cross1Icon onClick={()=>setOpen(false)} />
-              </div>
+              <div className="py-1">{renderView()}</div>
             </div>
-            <div className="py-1">{renderView()}</div>
-          </div>
+          )}
 
           {/* Large Screen Layout (Grid) */}
-          <div className="hidden h-full gap-3 md:grid md:grid-cols-[250px,1fr]">
-            <div className="col-start-1 bg-gray-100">
-              <MenuItems
-                currentView={currentView}
-                setCurrentView={setCurrentView}
-              />
+          {isDesktop && (
+            <div className="grid h-full grid-cols-[250px,1fr] gap-3">
+              <div className="col-start-1 bg-gray-100">
+                <MenuItems
+                  currentView={currentView}
+                  setCurrentView={setCurrentView}
+                />
+              </div>
+              <div className="col-start-2 flex flex-col gap-3">
+                <div className="border-b py-3">{currentView.toUpperCase()}</div>
+                <ScrollArea className="h-[500px]">{renderView()}</ScrollArea>
+              </div>
             </div>
-            <div className="col-start-2 flex flex-col gap-3">
-              <div className="border-b py-3">{currentView.toUpperCase()}</div>
-              <ScrollArea className="h-[100px] md:h-[500px]">
-                {renderView()}
-              </ScrollArea>
-            </div>
-          </div>
+          )}
         </DialogContent>
       </Dialog>
     </>
