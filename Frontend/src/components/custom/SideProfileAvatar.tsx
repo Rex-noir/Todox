@@ -2,7 +2,7 @@ import { useAuthStore } from "@/stores/auth/authStore";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { LuUser2 } from "react-icons/lu";
+import Settings from "@/Pages/Settings";
 
 export default function SideProfileAvatar() {
   const user = useAuthStore().user;
@@ -21,12 +21,9 @@ export default function SideProfileAvatar() {
             <ChevronDownIcon />
           </div>
         </PopoverTrigger>
-        <PopoverContent className="w-[250px] p-2 ml-2">
+        <PopoverContent className="ml-2 w-[250px] p-2">
           <div className="flex flex-col gap-2">
-            <div className="flex cursor-pointer px-3 gap-5 items-center rounded-md p-1 hover:bg-neutral-200  dark:hover:bg-slate-800">
-              <LuUser2 />
-              <span>Account Setting</span>
-            </div>
+            <Settings />
           </div>
         </PopoverContent>
       </Popover>
