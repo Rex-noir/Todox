@@ -91,7 +91,7 @@ export function ViewProject() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       key={projectId}
-      className="w-full max-w-xl" // Add max-w-3xl or adjust as needed
+      className="w-full max-w-full sm:max-w-xl"
     >
       <motion.div layout className="mx-auto h-full w-full space-y-2">
         <AnimatePresence>
@@ -290,7 +290,7 @@ export function TodoItem({ todo }: { todo: Todo }) {
             >
               {todo.title}
             </motion.p>
-            <motion.p layout className={`text-sm ${todo.completed ? "" : ""}`}>
+            <motion.p layout className={`text-sm text-muted-foreground ${todo.completed ? "line-through" : ""}`}>
               {todo.description}
             </motion.p>
             <motion.div layout className="mt-1 flex items-center gap-1 text-sm">

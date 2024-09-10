@@ -154,7 +154,7 @@ const ResponsiveLayout: React.FC = () => {
           return (
             <div className="flex min-h-screen">
               <SideMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-              <div className="relative flex-1">
+              <div className="relative w-full flex-1">
                 <Header
                   isScrolled={isScrolled}
                   isMenuOpen={isMenuOpen}
@@ -162,7 +162,7 @@ const ResponsiveLayout: React.FC = () => {
                 />
                 <main
                   className={cx(
-                    "scrollbar-hide mt-14 flex h-full justify-center p-4 transition-all duration-300",
+                    "scrollbar-hide mt-20 flex h-full justify-center p-3 transition-all duration-300",
                     {
                       "md:ml-[20rem]": isMenuOpen,
                     },
