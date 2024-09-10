@@ -49,7 +49,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->json(['message' => 'User updated successfully', 'user' => $user->getChanges()], 200);
+        return response()->json(['message' => 'User updated successfully', 'data' => $user->getChanges()], 200);
     }
 
     /**
