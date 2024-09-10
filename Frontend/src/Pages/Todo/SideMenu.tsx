@@ -21,7 +21,7 @@ const LayoutMenu: React.FC = () => {
       >
         Private
       </motion.h3>
-      <nav className="flex flex-col gap-8">
+      <nav className="flex mb-10 flex-col gap-8">
         <DefaultMenus />
         <Separator className="bg-gray-200" />
         <ProjectItems />
