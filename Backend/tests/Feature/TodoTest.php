@@ -111,7 +111,6 @@ describe("API TEST for Todos", function () {
                 'data' => [
                     'title' => 'Updated Todo Title',
                     'description' => 'Updated description',
-                    'completed' => true,
                     'due_date' => '2023-12-31',
                 ]
             ]);
