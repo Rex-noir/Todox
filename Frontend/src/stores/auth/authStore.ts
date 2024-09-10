@@ -11,6 +11,7 @@ type State = {
 type Action = {
   login: (user: User) => void;
   logout: () => void;
+  update: (user: Partial<User>) => void;
 };
 
 const initialState: State = {
@@ -31,6 +32,13 @@ const useAuthStoreBase = create<State & Action>()(
         state.user = null;
         state.isAuthenticated = false;
       }),
+    update: (user) => {
+      set((state) => {
+        if (state.user) {
+          state.user = { ...state.user, ...user };
+      }
+      });
+    },
   })),
 );
 

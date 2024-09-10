@@ -26,7 +26,7 @@ export default function sortTodos(todos: Todo[]): Todo[] {
     if (b.due_date) return 1;
 
     // If neither have due dates, sort by creation date
-    return (a.createdAt?.getTime() ?? 0) - (b.createdAt?.getTime() ?? 0);
+    return (a.created_at?.getTime() ?? 0) - (b.created_at?.getTime() ?? 0);
   });
 }
 
@@ -35,8 +35,8 @@ export function sortTodoListsByCreatedAt(
   order: "asc" | "desc" = "asc",
 ): TodoList[] {
   return [...todoLists].sort((a, b) => {
-    const dateA = new Date(a.createdAt).getTime();
-    const dateB = new Date(b.createdAt).getTime();
+    const dateA = new Date(a.created_at).getTime();
+    const dateB = new Date(b.created_at).getTime();
 
     if (order === "asc") {
       return dateA - dateB; // Sort in ascending order

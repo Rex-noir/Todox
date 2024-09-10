@@ -56,11 +56,11 @@ export const setProjects = (projects: Project[] = []) => {
           ...acc,
           [project.id]: {
             ...project,
-            createdAt: project.createdAt
-              ? new Date(project.createdAt)
+            created_at: project.created_at
+              ? new Date(project.created_at)
               : undefined,
-            updatedAt: project.updatedAt
-              ? new Date(project.updatedAt)
+            updated_at: project.updated_at
+              ? new Date(project.updated_at)
               : undefined,
           },
         }),
@@ -124,8 +124,8 @@ export const setTodoLists = (todoLists: TodoList[] = []) => {
         ...acc,
         [todoList.id]: {
           ...todoList,
-          createdAt: new Date(todoList.createdAt),
-          updatedAt: new Date(todoList.updatedAt),
+          created_at: new Date(todoList.created_at),
+          updated_at: new Date(todoList.updated_at),
         },
       }),
       {},
@@ -201,8 +201,8 @@ export const setTodos = (todos: Todo[] = []) => {
         ...acc,
         [todo.id]: {
           ...todo,
-          createdAt: todo.createdAt ? new Date(todo.createdAt) : undefined,
-          updatedAt: todo.updatedAt ? new Date(todo.updatedAt) : undefined,
+          created_at: todo.created_at ? new Date(todo.created_at) : undefined,
+          updated_at: todo.updated_at ? new Date(todo.updated_at) : undefined,
           completedAt: todo.completedAt
             ? new Date(todo.completedAt)
             : undefined,

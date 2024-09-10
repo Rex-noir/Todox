@@ -22,8 +22,8 @@ describe("Generator functions", () => {
       "id",
       "name",
       "email",
-      "createdAt",
-      "updatedAt",
+      "created_at",
+      "updated_at",
       "avatar",
     ]);
   });
@@ -36,8 +36,8 @@ describe("Generator functions", () => {
         "id",
         "name",
         "email",
-        "createdAt",
-        "updatedAt",
+        "created_at",
+        "updated_at",
         "avatar",
       ]);
     });
@@ -50,8 +50,8 @@ describe("Generator functions", () => {
       "user_id",
       "title",
       "description",
-      "createdAt",
-      "updatedAt",
+      "created_at",
+      "updated_at",
       "status",
     ]);
     expect(["active", "archived", "completed"]).toContain(project.status);
@@ -66,8 +66,8 @@ describe("Generator functions", () => {
         "user_id",
         "title",
         "description",
-        "createdAt",
-        "updatedAt",
+        "created_at",
+        "updated_at",
         "status",
       ]);
       expect(["active", "archived", "completed"]).toContain(project.status);
@@ -81,8 +81,8 @@ describe("Generator functions", () => {
       "project_id",
       "title",
       "description",
-      "createdAt",
-      "updatedAt",
+      "created_at",
+      "updated_at",
       "todoIds",
       "completedTodosCount",
       "incompleteTodosCount",
@@ -104,8 +104,8 @@ describe("Generator functions", () => {
         "project_id",
         "title",
         "description",
-        "createdAt",
-        "updatedAt",
+        "created_at",
+        "updated_at",
         "todoIds",
         "completedTodosCount",
         "incompleteTodosCount",
@@ -136,8 +136,8 @@ describe("Generator functions", () => {
       "todoList_id",
       "due_date",
       "description",
-      "createdAt",
-      "updatedAt",
+      "created_at",
+      "updated_at",
       "priority",
     ]);
     expect(typeof todo.priority).toBe("string");
@@ -156,8 +156,8 @@ describe("Generator functions", () => {
         "todoList_id",
         "due_date",
         "description",
-        "createdAt",
-        "updatedAt",
+        "created_at",
+        "updated_at",
         "priority",
       ]);
       expect(typeof todo.priority).toBe("string");

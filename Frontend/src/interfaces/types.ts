@@ -2,8 +2,8 @@ export interface User {
   readonly id: string;
   name: string;
   email: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
   avatar?: string;
 }
 
@@ -12,8 +12,8 @@ export interface Project {
   user_id?: string;
   title: string;
   description?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_at?: Date;
+  updated_at?: Date;
   status?: ProjectStatus;
   todoListIds: string[];
   iconColor?: string; // New field for icon color
@@ -32,12 +32,12 @@ export interface TodoList {
   project_id: string;
   title: string;
   description?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
   completedTodosCount: number;
   incompleteTodosCount: number;
   todoIds: string[];
-  tags?: Array<"important" | "urgent" | "high-priority" | string>|string; // array of specified or custom tags
+  tags?: Array<"important" | "urgent" | "high-priority" | string> | string; // array of specified or custom tags
 }
 
 export interface Todo {
@@ -47,10 +47,10 @@ export interface Todo {
   completedAt?: Date;
   user_id?: string;
   todoList_id?: string;
-  due_date?: Date|string|null;
+  due_date?: Date | string | null;
   description?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  created_at?: Date;
+  updated_at?: Date;
   priority: string;
 }
 
