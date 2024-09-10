@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
+import sortTodos from "@/lib/sortTodos";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 
 const MemoizedCreateNewTodo = React.memo(CreateNewTodo);
 const MemoizedTodoItem = React.memo(TodoItem);
@@ -25,6 +27,8 @@ const Upcoming: React.FC = () => {
   const endDate = addDays(startDate, 365 * 2); // 2 years from start date
   const totalDays = differenceInDays(endDate, startDate);
 
+  const screenSM = useMediaQuery("(min-width: 516px)");
+  const screenMB = useMediaQuery("(max-width: 515px)");
   // Get tasks from the store
   const tasks = useTodoxStore((state) => Object.values(state.todos));
 
@@ -43,20 +47,23 @@ const Upcoming: React.FC = () => {
     (index: number): number => {
       const date = addDays(startDate, index);
       const dateString = date.toDateString();
-      const dayTasks = tasks.filter(
-        (task) =>
-          task.due_date &&
-          startOfDay(new Date(task.due_date)).getTime() === date.getTime(),
+      const dayTasks = sortTodos(
+        tasks.filter(
+          (task) =>
+            task.due_date &&
+            startOfDay(new Date(task.due_date)).getTime() === date.getTime() &&
+            task.completed !== true,
+        ),
       );
 
-      const baseHeight = 100; // Base height for the day container
-      const taskHeight = 100; // Height for each task
+      const baseHeight = 144; // Base height for the day container
+      const taskHeight = screenSM ? 159 : screenMB? 230 :180; // Height for each task
 
-      const createNewTodoHeight = collapsedStates[dateString] ? 280 : 0;
+      const createNewTodoHeight = collapsedStates[dateString] ? 250 : 0;
 
       return createNewTodoHeight + baseHeight + dayTasks.length * taskHeight;
     },
-    [tasks, startDate, collapsedStates],
+    [tasks, startDate, collapsedStates, screenSM,screenMB],
   );
 
   const handleCollapseChange = useCallback((date: Date, value: boolean) => {
@@ -70,10 +77,13 @@ const Upcoming: React.FC = () => {
   const renderDay = useCallback(
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       const date = addDays(startDate, index);
-      const dayTasks = tasks.filter(
-        (task) =>
-          task.due_date &&
-          startOfDay(new Date(task.due_date)).getTime() === date.getTime(),
+      const dayTasks = sortTodos(
+        tasks.filter(
+          (task) =>
+            task.due_date &&
+            startOfDay(new Date(task.due_date)).getTime() === date.getTime() &&
+            task.completed !== true,
+        ),
       );
 
       return (
