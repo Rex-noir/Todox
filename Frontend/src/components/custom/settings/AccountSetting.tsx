@@ -166,7 +166,7 @@ export default function AccountView() {
           </div>
 
           {isModified && (
-            <div className="sticky -bottom-2 z-20 flex w-full justify-end gap-3 rounded-md bg-white py-2">
+            <div className="sticky -bottom-2 z-20 flex w-full justify-end gap-3 rounded-md bg-white dark:bg-inherit py-2">
               <Button
                 onClick={resetForms}
                 type="button"
