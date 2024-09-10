@@ -76,7 +76,7 @@ const Header: React.FC<{
   return (
     <header
       className={cx(
-        "fixed z-40 flex items-center justify-between bg-white p-2 mt-1 py-4 transition-all duration-300 dark:bg-slate-950",
+        "fixed z-40 flex items-center justify-between bg-white p-2 py-4 pt-5 transition-all duration-300 dark:bg-slate-950",
         {
           "shadow-sm": isScrolled,
           "w-full": !isMenuOpen,
