@@ -78,7 +78,10 @@ export default function Settings() {
                   <div className="p-2">{currentView.toUpperCase()}</div>
                 </div>
                 <div>
-                  <Cross1Icon onClick={() => setOpen(false)} />
+                  <Cross1Icon
+                    className="cursor-pointer"
+                    onClick={() => setOpen(false)}
+                  />
                 </div>
               </div>
               <div className="py-1">{renderView()}</div>
@@ -88,14 +91,20 @@ export default function Settings() {
           {/* Large Screen Layout (Grid) */}
           {isDesktop && (
             <div className="grid h-full grid-cols-[250px,1fr] gap-3">
-              <div className="col-start-1 bg-gray-100">
+              <div className="col-start-1 bg-gray-100 dark:bg-slate-900">
                 <MenuItems
                   currentView={currentView}
                   setCurrentView={setCurrentView}
                 />
               </div>
               <div className="col-start-2 flex flex-col gap-3">
-                <div className="border-b py-3">{currentView.toUpperCase()}</div>
+                <div className="flex justify-between border-b py-3">
+                  <span>{currentView.toUpperCase()}</span>
+                  <Cross1Icon
+                    className="mr-3 size-5 cursor-pointer"
+                    onClick={() => setOpen(false)}
+                  />
+                </div>
                 <ScrollArea className="h-[500px]">{renderView()}</ScrollArea>
               </div>
             </div>
@@ -120,12 +129,12 @@ function MenuItems({
           key={item.id}
           className={`flex cursor-pointer items-center gap-1 rounded-md text-sm ${
             currentView === item.id
-              ? "bg-neutral-200 dark:bg-slate-900"
+              ? "bg-neutral-200 dark:bg-slate-950"
               : "hover:bg-neutral-100 dark:hover:bg-slate-800"
           }`}
           onClick={() => setCurrentView(item.id)}
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-neutral-200 dark:bg-slate-900">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-neutral-200 dark:bg-slate-950">
             {item.icon}
           </div>
           <div>{item.title}</div>
