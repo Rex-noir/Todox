@@ -63,20 +63,21 @@ export function TodoListItem({ list }: { list: TodoList }) {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="flex w-full cursor-pointer gap-3 overflow-hidden rounded-md p-3 text-left transition-colors duration-200"
+      className="m-3 flex w-full cursor-pointer gap-3 break-all rounded-md text-left transition-colors duration-200"
     >
       {editingMode ? (
         <>
           <div className="flex w-full flex-col gap-3">
             <div>
-              <Input
+              <AutosizeTextarea
+                autoFocus
                 className="!min-h-0 resize-none border-0 p-0 text-lg shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 placeholder="Title"
                 onChange={(e) => setTitle(e.target.value)}
                 value={title}
               />
               <AutosizeTextarea
-                className="minh resize-none border-0 p-0 text-sm shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="minh resize-none border-0 p-0 text-sm text-muted-foreground shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 placeholder="Description"
                 onChange={(e) => setDescription(e.target.value)}
                 value={description}
@@ -114,28 +115,18 @@ export function TodoListItem({ list }: { list: TodoList }) {
           </div>
         </>
       ) : (
-        <>
-          <div
-            onClick={() => setEditingMode(true)}
-            className="flex w-full cursor-text flex-col gap-1 sm:gap-3"
-          >
-            <div className="w-full max-w-full overflow-hidden">
-              <div className="flex w-full items-center justify-between">
-                <p className="min-w-0 flex-1 truncate font-bold">
-                  {list.title}
-                </p>
-                <TodoListOptions listId={list.id} />
-              </div>
-              <p className="text-sm">{list.description}</p>
-            </div>
-            {tags && (
-              <div className="flex flex-wrap gap-2">
-                {Array.isArray(tags) &&
-                  tags.map((tag) => <Badge key={tag}>{tag}</Badge>)}
-              </div>
-            )}
+        <div className="cursor-text" onClick={() => setEditingMode(true)}>
+          <div className="flex justify-between gap-2 text-justify">
+            <p className="text-xl leading-tight">{title}</p>
+            <TodoListOptions listId={list.id} />
           </div>
-        </>
+          <p className="text-sm text-muted-foreground">{description}</p>
+          <div className="flex gap-1 flex-wrap mt-3">
+            {Array.isArray(tags)&&tags.map((tag) => (
+              <Badge key={tag}>{tag}</Badge>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
