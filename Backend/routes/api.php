@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\TodolistController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +22,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('todolists', TodolistController::class);
 
-    Route::post("/password/change", [PasswordController::class, 'changePassword'])->middleware('auth:sanctum');
+    Route::apiResource('users', UserController::class);
 });
