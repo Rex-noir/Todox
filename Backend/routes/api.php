@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\TodolistController;
@@ -20,4 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('todos', TodoController::class);
     Route::apiResource('projects', ProjectController::class);
     Route::apiResource('todolists', TodolistController::class);
+
+    Route::post("/password/change", [PasswordController::class, 'changePassword'])->middleware('auth:sanctum');
 });
