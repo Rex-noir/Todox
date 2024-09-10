@@ -54,6 +54,12 @@ export default function AccountView() {
     setIsModified(false);
   };
 
+  useEffect(() => {
+    if (updateUserMutation.isSuccess) {
+      setCurrentPassword("");
+    }
+  }, [updateUserMutation.isSuccess]);
+
   return (
     <Card className="mx-auto w-full max-w-2xl border-none shadow-none">
       <CardHeader>
