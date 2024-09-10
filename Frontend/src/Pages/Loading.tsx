@@ -39,7 +39,7 @@ export default function Loading() {
   }, [gradients.length]);
 
   return (
-    <div className="fixed top-0 mb-6 h-px w-full dark:bg-neutral-700">
+    <div className="fixed top-0 mb-6 z-50 h-px w-full dark:bg-neutral-700">
       <div
         className={`h-[2px] animate-pulse bg-gradient-to-r ${gradients[colorIndex]}`}
         style={{ width: `${progress}%` }}
