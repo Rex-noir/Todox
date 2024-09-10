@@ -115,7 +115,7 @@ export function TodoListItem({ list }: { list: TodoList }) {
           </div>
         </>
       ) : (
-        <div className="cursor-text" onClick={() => setEditingMode(true)}>
+        <div className="cursor-text w-full" onClick={() => setEditingMode(true)}>
           <div className="flex justify-between gap-2 text-justify">
             <p className="text-xl leading-tight">{title}</p>
             <TodoListOptions listId={list.id} />
