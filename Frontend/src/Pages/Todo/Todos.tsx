@@ -17,7 +17,7 @@ import Splash from "../Splash";
 import LargeScreenMenu from "./SideMenu";
 import MenuToggleButton from "@/components/MenuToggleButton";
 import LogoutButton from "@/components/custom/LogoutButton";
-import { User } from "@/interfaces/types";
+import { ApiResponse, User } from "@/interfaces/types";
 import { setProjects, setTodoLists, setTodos } from "@/stores/todox/actions";
 import { login } from "@/stores/auth/actions";
 import { AxiosResponse } from "axios";
@@ -103,7 +103,7 @@ const Header: React.FC<{
 
 const ResponsiveLayout: React.FC = () => {
   const { user } = useLoaderData() as {
-    user: Promise<AxiosResponse<User>>;
+    user: Promise<AxiosResponse<ApiResponse<User>>>;
   };
 
   const { data: ProjectData, isPending: projectPending } = useGetAllProjects(
@@ -137,7 +137,7 @@ const ResponsiveLayout: React.FC = () => {
   useEffect(() => {
     user
       .then((value) => {
-        login(value.data);
+        login(value.data.data);
         setProjects(ProjectData);
         setTodoLists(TodoListData);
         setTodos(TodoData);
