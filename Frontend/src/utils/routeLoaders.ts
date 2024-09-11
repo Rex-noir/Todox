@@ -1,17 +1,18 @@
 import api from "@/api";
-import { defer, redirect } from "react-router-dom";
+import { defer } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export const authRequired = () => {
+  const sessionCookie = Cookies.get("todox-session");
+
+  if (!sessionCookie) {
+    return defer({
+      user: Promise.reject("No session found"),
+    });
+  }
   const getUser = api.get("/user");
 
   return defer({
     user: getUser,
   });
-};
-
-export const authBlock = () => {
-  return api
-    .get("/user")
-    .then(() => redirect("/app"))
-    .catch(() => null);
 };

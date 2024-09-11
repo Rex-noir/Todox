@@ -138,12 +138,21 @@ const ResponsiveLayout: React.FC = () => {
     user
       .then((value) => {
         login(value.data.data);
-        setProjects(ProjectData);
-        setTodoLists(TodoListData);
-        setTodos(TodoData);
       })
       .catch(() => console.warn("User not authenticated"));
-  }, [user, ProjectData, TodoData, TodoListData]);
+  }, [user]);
+
+  useEffect(() => {
+    if (ProjectData) {
+      setProjects(ProjectData);
+    }
+    if (TodoData) {
+      setTodoLists(TodoListData);
+    }
+    if (TodoListData) {
+      setTodos(TodoData);
+    }
+  }, [ProjectData, TodoData, TodoListData]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
