@@ -24,9 +24,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             session()->regenerate();
+
+            $userData = Auth::user();
+            $userData['remember'] = $remember;
             return response()->json([
                 'message' => "Login successful.",
-                'data' => Auth::user()
+                'data' => $userData,
             ], 200);
         }
 
