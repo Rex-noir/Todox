@@ -5,6 +5,7 @@ export interface User {
   created_at: Date;
   updated_at: Date;
   avatar?: string;
+  remember: boolean;
 }
 
 export interface Project {
