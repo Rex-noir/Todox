@@ -1,0 +1,18 @@
+meta {
+  name: Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{URL}}/auth/register
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  name: Rexnoir
+  email: pauzalala@proton.me
+  password: password
+  password_confirmation: password
+}

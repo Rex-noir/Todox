@@ -94,7 +94,13 @@ return [
                 'postmark',
             ],
         ],
-
+        
+        'mailgun' => [
+            'transport' => 'mailgun',
+            // 'client' => [
+            //     'timeout' => 5,
+            // ],
+        ],
     ],
 
     /*

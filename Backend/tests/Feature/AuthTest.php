@@ -1,13 +1,17 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\withMiddleware;
 use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
+use function PHPUnit\Framework\assertEquals;
 
 uses(RefreshDatabase::class);
 
@@ -48,6 +52,27 @@ test("web-register with valid information", function () {
     );
 
     $response->assertStatus(201);
+
+    $currentUser = Auth::user();
+    $expectedUser = User::where('email', 'test@gmail.com')->first();
+
+    assertEquals($expectedUser->id, $currentUser->id);
+
+});
+
+test("Register event is dispatched", function () {
+
+    Event::fake([Registered::class]);
+
+    $userData = [
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password'
+    ];
+
+    $result = postJson('/api/auth/register', $userData);
+    Event::assertDispatched(Registered::class);
 });
 
 test("web-register with invalid information", function () {
