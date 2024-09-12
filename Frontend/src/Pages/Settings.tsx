@@ -20,6 +20,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
+import PreferencesSetting from "@/components/custom/settings/PreferencesSetting";
+import { MdRoomPreferences } from "react-icons/md";
 
 interface MenuItem {
   title: string;
@@ -34,6 +36,12 @@ const items: MenuItem[] = [
     title: "Account",
     icon: <LuUser2 />,
     view: <AccountView />,
+  },
+  {
+    id: "preferences",
+    title: "Preferences",
+    icon: <MdRoomPreferences />,
+    view: <PreferencesSetting />,
   },
 ];
 
@@ -67,7 +75,7 @@ export default function Settings() {
           {/* Mobile Layout (Slide Navigation) */}
           {!isDesktop && (
             <div className="block">
-              <div className="flex items-center justify-between border-b bg-gray-100 p-2 px-3">
+              <div className="bg-gray flex items-center justify-between border-b p-2 px-3">
                 <div className="flex h-fit items-center gap-px">
                   <div className="flex items-center">
                     <SlideNav
@@ -91,7 +99,7 @@ export default function Settings() {
           {/* Large Screen Layout (Grid) */}
           {isDesktop && (
             <div className="grid h-full grid-cols-[250px,1fr] gap-3">
-              <div className="col-start-1 bg-gray-100 dark:bg-slate-900">
+              <div className="col-start-1 bg-slate-100 dark:bg-slate-900">
                 <MenuItems
                   currentView={currentView}
                   setCurrentView={setCurrentView}
@@ -134,7 +142,7 @@ function MenuItems({
           }`}
           onClick={() => setCurrentView(item.id)}
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-neutral-200 dark:bg-slate-950">
+          <div className="flex h-8 w-8 items-center justify-center rounded-md">
             {item.icon}
           </div>
           <div>{item.title}</div>
@@ -156,7 +164,10 @@ function SlideNav({
       <SheetTrigger>
         <LuPanelLeft className="size-5 cursor-pointer" />
       </SheetTrigger>
-      <SheetContent side={"left"} className="w-full p-2 py-10">
+      <SheetContent
+        side={"left"}
+        className="w-full bg-slate-100 p-2 py-10 dark:bg-slate-900"
+      >
         <VisuallyHidden>
           <SheetTitle />
           <SheetDescription />
