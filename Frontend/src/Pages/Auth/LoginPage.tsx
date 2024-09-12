@@ -19,8 +19,8 @@ export const LoginPage = () => {
     try {
       await loginMutation.mutateAsync({ email, password, remember });
       navigate("/app");
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch {
+      return {};
     }
   };
 
