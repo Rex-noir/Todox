@@ -60,7 +60,7 @@ export default function Verify() {
 
 const VerifyEmail = () => {
   const user = useAuthStore().user;
-  const [isThrottled, setIsThrottled] = useState(false);
+  const [isThrottled, setIsThrottled] = useState(true);
   const [countdown, setCountdown] = useState(60); // Adjust for desired throttling duration
 
   const resend = async () => {
