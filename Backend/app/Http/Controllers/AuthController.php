@@ -48,7 +48,12 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        Auth::login($user);
+        $remember = $request->boolean("remember", false);
+
+        Auth::login($user, $remember);
+        $userData = Auth::user();
+
+        $userData['remember'] = $remember;
 
         session()->regenerate();
 
@@ -56,7 +61,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => "Registration successful!",
-            "data" => Auth::user(),
+            "data" => $userData,
         ], 201);
     }
 

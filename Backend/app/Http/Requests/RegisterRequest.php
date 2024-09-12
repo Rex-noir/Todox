@@ -25,6 +25,7 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+            'remember' => 'boolean|nullable',
         ];
     }
 
@@ -48,6 +49,7 @@ class RegisterRequest extends FormRequest
             'password.string' => 'The password must be a valid string.',
             'password.min' => 'The password must be at least 8 characters long.',
             'password.confirmed' => 'The password confirmation does not match.',
+            'remember.boolean' => 'The remember me checkbox must be a boolean value.',
         ];
     }
 }
