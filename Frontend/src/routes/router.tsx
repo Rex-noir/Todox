@@ -7,6 +7,7 @@ import { LoginPage } from "@/Pages/Auth/LoginPage";
 import RegisterPage from "@/Pages/Auth/RegisterPage";
 import { authRequired } from "@/utils/routeLoaders";
 import Upcoming from "@/Pages/Upcoming";
+import Verify from "@/Pages/Auth/Verify";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
         element: <RegisterPage />,
       },
     ],
+  },
+  {
+    path: "/auth/Verify",
+    element: <Verify />,
   },
 ]);
 
