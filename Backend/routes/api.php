@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-Route::prefix('email')->middleware('auth:sanctum')->group(function () {
+Route::prefix('email')->group(function () {
 
     Route::get('/verify/{id}/{hash}', [VerifyEmailController::class, 'verifyEmail'])
         ->middleware('signed')

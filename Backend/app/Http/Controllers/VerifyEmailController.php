@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -10,9 +11,17 @@ use Illuminate\Http\Request;
 class VerifyEmailController extends Controller
 {
 
-    public function verifyEmail(\Illuminate\Foundation\Auth\EmailVerificationRequest $request)
+    public function verifyEmail(Request $request)
     {
-        $request->fulfill();
+        $user = User::find($request->route('id'));
+
+        if ($request->route('id') != $user->getKey()) {
+            throw new AuthorizationException;
+        }
+
+        if ($user->markEmailAsVerified())
+            event(new Verified($user));
+
         return response()->json(['message' => "Verified successfully"], 200);
     }
 
