@@ -6,6 +6,7 @@ import {
   Outlet,
   useLoaderData,
   useLocation,
+  useNavigate,
   useParams,
 } from "react-router-dom";
 import { Suspense } from "react";
@@ -102,6 +103,8 @@ const ResponsiveLayout: React.FC = () => {
     user: Promise<AxiosResponse<ApiResponse<User>>>;
   };
 
+  const userStore = useAuthStore().user;
+
   const { data: ProjectData, isPending: projectPending } = useGetAllProjects(
     useAuthStore().isAuthenticated,
   );
@@ -117,6 +120,7 @@ const ResponsiveLayout: React.FC = () => {
 
   const isMobile = useMediaQuery("(max-width: 768px)");
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isMobile) {
@@ -137,6 +141,12 @@ const ResponsiveLayout: React.FC = () => {
       })
       .catch(() => console.warn("User not authenticated"));
   }, [user]);
+
+  useEffect(() => {
+    if (userStore?.email && !userStore?.email_verified_at) {
+      return navigate("/auth/verify");
+    }
+  }, [userStore?.email_verified_at, navigate, userStore?.email]);
 
   useEffect(() => {
     if (ProjectData) {
