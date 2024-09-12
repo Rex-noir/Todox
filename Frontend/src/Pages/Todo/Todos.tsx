@@ -28,7 +28,6 @@ import { useGetAllTodoList } from "@/services/todoListService";
 import { useGetAllTodo } from "@/services/todoService";
 import Loading from "../Loading";
 import SideProfileAvatar from "@/components/custom/SideProfileAvatar";
-import { ToggleTheme } from "@/components/theme-toggle";
 
 const SideMenu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
   isOpen,
@@ -43,11 +42,8 @@ const SideMenu: React.FC<{ isOpen: boolean; toggleMenu: () => void }> = ({
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="fixed left-0 top-0 z-50 flex h-full w-80 flex-col bg-white dark:bg-slate-950 md:w-[20rem]"
       >
-        <div className="mb-3 flex items-center justify-between gap-1 px-1 py-1">
+        <div className="md: mb-3 flex items-center justify-between gap-1 px-3 py-1">
           <SideProfileAvatar />
-          <div className="mt-3">
-            <ToggleTheme />
-          </div>
           <Button onClick={toggleMenu} className="mt-2" variant="ghost">
             <LuPanelLeft size={24} />
           </Button>
