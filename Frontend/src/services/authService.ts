@@ -7,7 +7,12 @@ import { AxiosResponse } from "axios";
 interface LoginForm {
   email: string;
   password: string;
-  remember?:boolean;
+  remember?: boolean;
+}
+
+interface RegisterForm extends LoginForm {
+  password_confirmation: string;
+  name: string;
 }
 
 const authService = {
@@ -15,6 +20,11 @@ const authService = {
     api.post(`/auth/login`, credentials),
   logout: () => api.post(`/auth/logout`),
   getCurrentUser: (): Promise<User> => api.get(`/user`),
+
+  register: (
+    credentials: RegisterForm,
+  ): Promise<AxiosResponse<ApiResponse<User>>> =>
+    api.post(`/auth/register`, credentials),
 };
 
 export const useLogin = () => {
@@ -41,5 +51,14 @@ export const useCurrentUser = (enabled: boolean = false) => {
     queryKey: ["currentUser"],
     retry: false,
     enabled: enabled,
+  });
+};
+
+export const useRegister = () => {
+  return useMutation({
+    mutationFn: authService.register,
+    onSuccess: (data) => {
+      login(data.data.data);
+    },
   });
 };
