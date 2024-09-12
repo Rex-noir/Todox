@@ -11,9 +11,7 @@ export function Auth() {
   };
 
   useEffect(() => {
-    user
-      .then((value) => login(value.data.data))
-      .catch(() => console.warn("Unauthenticated!"));
+    user.then((value) => login(value.data.data)).catch(() => {});
   });
 
   return (
@@ -22,7 +20,7 @@ export function Auth() {
         resolve={user}
         errorElement={
           <div className="h-screen max-h-screen w-full px-3 lg:grid lg:grid-cols-2">
-            <div className="flex flex-col flex-wrap items-center justify-center py-12">
+            <div className="flex flex-col flex-wrap items-center justify-center py-3 lg:py-12">
               <img src="/icon.svg" className="lg:hidden" />
               <Outlet />
             </div>
