@@ -14,6 +14,8 @@ export default function Verify() {
   const verifyUrl = urlParams.get("verify_url");
   const navigate = useNavigate();
 
+  const user = useAuthStore().user;
+
   const verifyEmail = async (url: string) => {
     try {
       const response = await api.get(url);
@@ -36,6 +38,11 @@ export default function Verify() {
     }
   }, [verificationStatus, navigate]);
 
+  if (user) {
+    navigate("/");
+    return;
+  }
+
   if (verifyUrl) {
     verifyEmail(verifyUrl);
   } else {
@@ -43,7 +50,7 @@ export default function Verify() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen flex-col items-center justify-center">
       {verificationStatus === "pending" && <p>Verifying your email...</p>}
       {verificationStatus === "success" && (
         <>
@@ -101,20 +108,24 @@ const VerifyEmail = () => {
     <>
       <div className="flex h-full min-h-screen flex-col items-center justify-center gap-2 text-center">
         <p>Email verification has been sent.</p>
-        <p className="text-sm text-muted-foreground text-yellow-500">
-          If you didn't receive the email, please click the button below to
-          resend the verification.
-        </p>
+
         {user && (
-          <Button
-            className="m-3.5"
-            size="sm"
-            variant="destructive"
-            disabled={isThrottled}
-            onClick={resend}
-          >
-            {isThrottled ? `Resend (${countdown} seconds)` : "Resend"}
-          </Button>
+          <>
+            {" "}
+            <p className="text-sm text-muted-foreground text-yellow-500">
+              If you didn't receive the email, please click the button below to
+              resend the verification.
+            </p>
+            <Button
+              className="m-3.5"
+              size="sm"
+              variant="destructive"
+              disabled={isThrottled}
+              onClick={resend}
+            >
+              {isThrottled ? `Resend (${countdown} seconds)` : "Resend"}
+            </Button>
+          </>
         )}
       </div>
     </>
