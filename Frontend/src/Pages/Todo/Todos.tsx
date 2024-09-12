@@ -20,7 +20,7 @@ import MenuToggleButton from "@/components/MenuToggleButton";
 import LogoutButton from "@/components/custom/LogoutButton";
 import { ApiResponse, User } from "@/interfaces/types";
 import { setProjects, setTodoLists, setTodos } from "@/stores/todox/actions";
-import { login } from "@/stores/auth/actions";
+import { login, logout } from "@/stores/auth/actions";
 import { AxiosResponse } from "axios";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useGetAllProjects } from "@/services/projectService";
@@ -139,7 +139,7 @@ const ResponsiveLayout: React.FC = () => {
       .then((value) => {
         login(value.data.data);
       })
-      .catch(() => console.warn("User not authenticated"));
+      .catch(() => logout());
   }, [user]);
 
   useEffect(() => {

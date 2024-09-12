@@ -1,5 +1,5 @@
 import { ApiResponse, User } from "@/interfaces/types";
-import { login } from "@/stores/auth/actions";
+import { login, logout } from "@/stores/auth/actions";
 import { AxiosResponse } from "axios";
 import { Suspense, useEffect } from "react";
 import { Await, Navigate, Outlet, useLoaderData } from "react-router-dom";
@@ -11,7 +11,7 @@ export function Auth() {
   };
 
   useEffect(() => {
-    user.then((value) => login(value.data.data)).catch(() => {});
+    user.then((value) => login(value.data.data)).catch(() => logout());
   });
 
   return (
