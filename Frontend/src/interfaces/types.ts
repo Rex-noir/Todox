@@ -5,6 +5,7 @@ export interface User {
   created_at: Date;
   updated_at: Date;
   avatar?: string;
+  email_verified_at?: string;
   remember: boolean;
 }
 
@@ -55,7 +56,7 @@ export interface Todo {
   priority: string;
 }
 
-export interface ApiResponse<T> {
+export interface ApiResponse<T = undefined> {
   data: T;
   message?: string;
   errors?: Record<string, string[]>;
