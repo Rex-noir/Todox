@@ -11,8 +11,11 @@ api.interceptors.response.use(
   (error) => {
     if (isAxiosError(error)) {
       const e = error.response?.data as ApiResponse;
+      const message = e.message;
 
-      toast.error(e.message);
+      if (message !== "Unauthenticated.") {
+        toast.error(e.message);
+      }
     }
   },
 );
