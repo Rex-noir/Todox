@@ -3,7 +3,7 @@ import { defer } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export const authRequired = () => {
-  const sessionCookie = Cookies.get("todox-session");
+  const sessionCookie = Cookies.get("auth-status");
 
   if (!sessionCookie) {
     return defer({

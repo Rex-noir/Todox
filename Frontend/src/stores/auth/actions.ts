@@ -2,17 +2,21 @@ import { User } from "@/interfaces/types";
 import { useAuthStore } from "./authStore";
 import Cookies from "js-cookie";
 
+const SESSION_LIFETIME_MINUTES = 120; // Matching Laravel's SESSION_LIFETIME
+
 export const login = (user: User) => {
   useAuthStore.setState((state) => {
     state.user = user;
     state.isAuthenticated = true;
 
-    const twoHoursFromNow = new Date(new Date().getTime() + 2 * 60 * 60 * 1000);
-
-    if (user.remember) {
-      Cookies.set("todox-session", "remember", { expires: Infinity });
-    } else {
-      Cookies.set("todox-session", "session", { expires: twoHoursFromNow });
+    if (user.remember === true) {
+      // For "remember me", set a long-lived cookie
+      Cookies.set("auth-status", "authenticated", { expires: 365 }); // 1 year
+    } else if (user.remember === false) {
+      const expirationTime = new Date(
+        new Date().getTime() + SESSION_LIFETIME_MINUTES * 60 * 1000,
+      );
+      Cookies.set("auth-status", "authenticated", { expires: expirationTime });
     }
   });
 };
@@ -22,7 +26,7 @@ export const logout = () => {
     state.isAuthenticated = false;
     state.user = null;
 
-    Cookies.remove("todox-session");
+    Cookies.remove("auth-status");
   });
 };
 

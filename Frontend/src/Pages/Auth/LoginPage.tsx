@@ -5,17 +5,19 @@ import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "@/services/authService";
 import { LuLoader2 } from "react-icons/lu";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
   const loginMutation = useLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await loginMutation.mutateAsync({ email, password });
+      await loginMutation.mutateAsync({ email, password, remember });
       navigate("/app");
     } catch (error) {
       console.error("Login failed:", error);
@@ -58,6 +60,13 @@ export const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              checked={remember}
+              onCheckedChange={(value) => setRemember(value as boolean)}
+            />
+            <span>Remember me</span>
+          </div>
         </div>
         <Button
           type="submit"
