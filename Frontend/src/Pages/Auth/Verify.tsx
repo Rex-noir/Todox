@@ -4,7 +4,7 @@ import { ApiResponse } from "@/interfaces/types";
 import { useAuthStore } from "@/stores/auth/authStore";
 import { isAxiosError } from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function Verify() {
@@ -38,9 +38,8 @@ export default function Verify() {
     }
   }, [verificationStatus, navigate]);
 
-  if (user) {
-    navigate("/");
-    return;
+  if (user && user.email_verified_at) {
+    return <Navigate to={"/"} />;
   }
 
   if (verifyUrl) {
