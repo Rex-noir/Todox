@@ -1,4 +1,5 @@
 # Todox API Application Documentation
+
 ![Todox Logo](/images/icon.svg)
 
 ## Table of Contents
@@ -176,6 +177,12 @@ Manages CRUD operations for todo items.
 -   `PUT/PATCH /todos/{id}`: Update a specific todo
 -   `DELETE /todos/{id}`: Delete a specific todo
 
-Note: All API endpoints (except authentication endpoints) require authentication using Laravel Sanctum.
+### Email Verification
+
+-   `GET /email/verify/{id}/{hash}`: Verify a user's email address
+-   `POST /email/verify/send`: Send a new email verification notification
+
+Note: All API endpoints (except authentication and email verification not including the 'send' endpoints) require authentication using Laravel Sanctum.
 
 Note: Don't forget to set up your database connection in the `.env` file and run the necessary migrations and seeders.
+Note : Don't forget to set up your own email configuration in the `.env` file for email verification.

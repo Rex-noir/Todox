@@ -29,7 +29,7 @@
 ### Features
 
 - CRUD for Projects, TodoLists,Todos
-- Authentication ( **Note:** Only Login is implemented in Frontend)
+- Authentication with Email Verification
 
 ## Contributing
 
