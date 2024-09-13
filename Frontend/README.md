@@ -46,3 +46,12 @@ Editing
 
 Typical Project View
 ![Typical Project View](/images/typical-project-view.png)
+
+Email Verification
+![Email Verification](/images/email-verification.png)
+
+Upcoming
+![Upcoming](/images/upcoming.png)
+
+Setting
+![Settings](/images/setting.png)

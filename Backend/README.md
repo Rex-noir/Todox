@@ -182,7 +182,13 @@ Manages CRUD operations for todo items.
 -   `GET /email/verify/{id}/{hash}`: Verify a user's email address
 -   `POST /email/verify/send`: Send a new email verification notification
 
+### User Information Update
+
+-   `PUT/PATCH /users/{user}`: Update user information (only authenticated users can update their own information)
+
 Note: All API endpoints (except authentication and email verification not including the 'send' endpoints) require authentication using Laravel Sanctum.
 
 Note: Don't forget to set up your database connection in the `.env` file and run the necessary migrations and seeders.
 Note : Don't forget to set up your own email configuration in the `.env` file for email verification.
+
+Note : Current configuration uses MailGun free version which limit the sending of emails to only whitelisted emails. If you use MailGun or other services alike, don't forget to whitelist your email address during development.
