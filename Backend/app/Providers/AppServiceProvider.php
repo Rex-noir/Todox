@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         VerifyEmail::createUrlUsing(function ($notifiable) {
-            $frontendUrl = env('FRONTEND_URL', 'https://acerex.alwaysdata.net') . '/auth/verify';
+            $frontendUrl = 'https://acerex.alwaysdata.net/auth/verify';
 
             $verifyUrl = URL::temporarySignedRoute(
                 'verification.verify',
