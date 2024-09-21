@@ -14,6 +14,7 @@ export const generateUsers = (count: number = 1): User | User[] =>
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
       avatar: faker.image.avatar(),
+      remember:faker.datatype.boolean()
     }),
     count,
   );
